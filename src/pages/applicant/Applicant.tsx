@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { User, columns } from "./components/table/columns.ts";
 import { DataTable } from "./components/table/data-table.tsx";
 import { getApplicants } from "@/services/applicantService"; // Import the API function
+import AddApplicant from "./components/table/controls/AddApplicant.tsx";
 
 export default function Applicant() {
   const [data, setData] = useState<User[]>([]);
@@ -29,6 +30,7 @@ export default function Applicant() {
 
   return (
     <div className="container mx-auto py-10 ">
+      <AddApplicant />
       <DataTable columns={columns} data={data} />
     </div>
   );
