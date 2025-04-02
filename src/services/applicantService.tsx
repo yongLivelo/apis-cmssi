@@ -11,6 +11,6 @@ export const addApplicant = async (transactionData: object) => {
 };
 
 export const deleteApplicant = async (transactionData: object) => {
-  const response = await api.post("/deleteApplicant", transactionData);
+  const response = await api.delete("/deleteApplicant", transactionData);
   return response.data;
 };
