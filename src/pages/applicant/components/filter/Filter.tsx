@@ -5,17 +5,17 @@ import { Checkbox } from "@/components/ui/checkbox";
 
 function Filter() {
   return (
-    <div className="p-6 max-w-screen-lg mx-auto bg-gray-50 border border-gray-300 rounded-md shadow-md">
-      <h1 className="text-center text-xl font-bold mb-4 text-gray-700">
+    <div className="p-0 max-w-full w-full bg-gray-50 border border-gray-300">
+      <h1 className="text-center text-xl font-bold my-4 text-gray-700">
         Job Application Form
       </h1>
-      <form className="space-y-6">
+      <form className="space-y-6 w-full px-8">
         {/* Personal Information Section */}
-        <fieldset className="border border-gray-200 p-6 rounded-md">
-          <legend className="font-semibold text-gray-800 px-4 mb-2">
+        <fieldset className="border border-gray-200 rounded-none">
+          <legend className="font-semibold text-gray-800 px-4">
             Personal Information
           </legend>
-          <div className="grid grid-cols-2 gap-8">
+          <div className="grid grid-cols-2 gap-8 px-6 py-4">
             {/* Left Column */}
             <div className="space-y-4">
               <div>
@@ -34,7 +34,7 @@ function Filter() {
                 >
                   Status
                 </Label>
-                <Input id="status" type="text" />
+                <Input id="status" type="text" disabled />
               </div>
               <div>
                 <Label
@@ -110,7 +110,14 @@ function Filter() {
                 >
                   Civil Status
                 </Label>
-                <Input id="civilStatus" type="text" />
+                <select
+                  id="civilStatus"
+                  className="w-full border border-gray-300 rounded-md px-2 py-1"
+                >
+                  <option value="" disabled>
+                    Select Civil Status
+                  </option>
+                </select>
               </div>
               <div>
                 <Label
@@ -119,7 +126,14 @@ function Filter() {
                 >
                   Training Status
                 </Label>
-                <Input id="trainingStatus" type="text" />
+                <select
+                  id="trainingStatus"
+                  className="w-full border border-gray-300 rounded-md px-2 py-1"
+                >
+                  <option value="" disabled>
+                    Select Training Status
+                  </option>
+                </select>
               </div>
               <div>
                 <Label
@@ -128,7 +142,14 @@ function Filter() {
                 >
                   Desired Position
                 </Label>
-                <Input id="desiredPosition" type="text" />
+                <select
+                  id="desiredPosition"
+                  className="w-full border border-gray-300 rounded-md px-2 py-1"
+                >
+                  <option value="" disabled>
+                    Select Desired Position
+                  </option>
+                </select>
               </div>
               <div>
                 <Label
@@ -164,7 +185,7 @@ function Filter() {
         </fieldset>
 
         {/* Search Button */}
-        <div className="flex justify-end mt-4">
+        <div className="flex justify-end px-6 py-4">
           <Button className="bg-blue-500 text-white hover:bg-blue-600 transition px-4 py-2 rounded-md">
             Search
           </Button>
