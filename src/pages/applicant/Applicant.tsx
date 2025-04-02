@@ -3,6 +3,7 @@ import { User, columns } from "./components/table/columns.tsx";
 import { DataTable } from "./components/table/data-table.tsx";
 import { getApplicants } from "@/services/applicantService";
 import Filter from "./components/filter/Filter.tsx";
+import Controls from "./components/controls/controls.tsx";
 
 export default function Applicant() {
   const [data, setData] = useState<User[]>([]);
@@ -32,6 +33,7 @@ export default function Applicant() {
   return (
     <div className="container mx-auto py-10 px-4">
       <Filter />
+      <Controls />
       <DataTable columns={columns} data={data} />
     </div>
   );
