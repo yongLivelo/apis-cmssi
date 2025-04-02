@@ -36,7 +36,7 @@ function Filter() {
                 </Label>
                 <select
                   id="applicationStatus"
-                  className="w-full border border-gray-300 rounded-md px-2 py-1"
+                  className="w-full border border-gray-300 rounded-md px-2 py-1 text-gray-700 text-sm"
                 >
                   <option value="Pending">Pending</option>
                   <option value="Confirmed">Confirmed</option>
@@ -118,11 +118,9 @@ function Filter() {
                 </Label>
                 <select
                   id="civilStatus"
-                  className="w-full border border-gray-300 rounded-md px-2 py-1"
+                  className="w-full border border-gray-300 rounded-md px-2 py-1 text-gray-700 text-sm"
                 >
-                  <option value="" disabled>
-                    Select Civil Status
-                  </option>
+                  <option value="N/A">N/A</option>
                 </select>
               </div>
               <div>
@@ -134,11 +132,9 @@ function Filter() {
                 </Label>
                 <select
                   id="trainingStatus"
-                  className="w-full border border-gray-300 rounded-md px-2 py-1"
+                  className="w-full border border-gray-300 rounded-md px-2 py-1 text-gray-700 text-sm"
                 >
-                  <option value="" disabled>
-                    Select Training Status
-                  </option>
+                  <option value="N/A">N/A</option>
                 </select>
               </div>
               <div>
@@ -150,11 +146,9 @@ function Filter() {
                 </Label>
                 <select
                   id="desiredPosition"
-                  className="w-full border border-gray-300 rounded-md px-2 py-1"
+                  className="w-full border border-gray-300 rounded-md px-2 py-1 text-gray-700 text-sm"
                 >
-                  <option value="" disabled>
-                    Select Desired Position
-                  </option>
+                  <option value="N/A">N/A</option>
                 </select>
               </div>
               <div>
