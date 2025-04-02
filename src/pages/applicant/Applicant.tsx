@@ -10,6 +10,10 @@ export default function Applicant() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
+  const handleAddApplicant = (newApplicant: User) => {
+    setData((prevData) => [...prevData, newApplicant]);
+  };
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -33,7 +37,7 @@ export default function Applicant() {
   return (
     <div className="container mx-auto py-10 px-4">
       <Filter />
-      <Controls />
+      <Controls onAddApplicant={handleAddApplicant} />
       <DataTable columns={columns} data={data} />
     </div>
   );
