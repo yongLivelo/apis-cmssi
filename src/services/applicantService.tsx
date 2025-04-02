@@ -5,12 +5,12 @@ export const getApplicants = async () => {
   return response.data;
 };
 
-export const addApplicant = async (transactionData: object) => {
-  const response = await api.post("/addApplicant", transactionData);
+export const addApplicant = async (applicationData: object) => {
+  const response = await api.post("/addApplicant", applicationData);
   return response.data;
 };
 
-export const deleteApplicant = async (transactionData: object) => {
-  const response = await api.delete("/deleteApplicant", transactionData);
+export const deleteApplicant = async (applicationId: string) => {
+  const response = await api.delete(`/deleteApplicant/${applicationId}`);
   return response.data;
 };

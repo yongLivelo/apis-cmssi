@@ -13,6 +13,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { deleteApplicant } from "@/services/applicantService";
 
 export type User = {
   id: number;
@@ -112,7 +113,7 @@ export const columns: ColumnDef<User>[] = [
               Copy User ID
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>View User</DropdownMenuItem>
+            <DropdownMenuItem>Delete</DropdownMenuItem>
             <DropdownMenuItem>View Details</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
