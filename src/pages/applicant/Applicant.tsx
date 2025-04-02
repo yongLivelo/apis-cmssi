@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { User, columns } from "./components/table/columns.ts";
+import { User, columns } from "./components/table/columns.tsx";
 import { DataTable } from "./components/table/data-table.tsx";
 import { getApplicants } from "@/services/applicantService";
 import Filter from "./components/filter/Filter.tsx";
