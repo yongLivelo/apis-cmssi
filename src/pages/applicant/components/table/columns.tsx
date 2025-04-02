@@ -15,15 +15,22 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 export type User = {
-  id: string;
-  applicationDate: string;
-  lastName: string;
+  id: number;
   firstName: string;
+  applicationStatus: string;
+  lastName: string;
   middleName: string;
   status: string;
   birthDate: string;
-  userName: string;
-  password: string;
+  city: string;
+  province: string;
+  civilstatus: string;
+  trainingStatus: string;
+  desiredPosition: string;
+  height: number;
+  highSchoolGraduate: boolean;
+  collegeGraduate: boolean;
+
   actions?: ReactNode;
 };
 
@@ -33,32 +40,56 @@ export const columns: ColumnDef<User>[] = [
     header: "Id",
   },
   {
-    accessorKey: "applicationDate",
-    header: "Application Date",
+    accessorKey: "firstName",
+    header: "First Name",
+  },
+  {
+    accessorKey: "applicationStatus",
+    header: "Application Status",
   },
   {
     accessorKey: "lastName",
     header: "Last Name",
   },
   {
-    accessorKey: "firstName",
-    header: "First Name",
-  },
-  {
     accessorKey: "middleName",
     header: "Middle Name",
-  },
-  {
-    accessorKey: "status",
-    header: "Status",
   },
   {
     accessorKey: "birthDate",
     header: "Birth Date",
   },
   {
-    accessorKey: "userName",
-    header: "Username",
+    accessorKey: "city",
+    header: "City",
+  },
+  {
+    accessorKey: "province",
+    header: "Province",
+  },
+  {
+    accessorKey: "civilStatus",
+    header: "Civil Status",
+  },
+  {
+    accessorKey: "trainingStatus",
+    header: "Training Status",
+  },
+  {
+    accessorKey: "desiredPosition",
+    header: "Desired Position",
+  },
+  {
+    accessorKey: "height",
+    header: "Height",
+  },
+  {
+    accessorKey: "highSchoolGraduate",
+    header: "Highschool Graduate",
+  },
+  {
+    accessorKey: "collegeGraduate",
+    header: "College Graduate",
   },
   {
     id: "actions",
@@ -76,7 +107,7 @@ export const columns: ColumnDef<User>[] = [
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuItem
-              onClick={() => navigator.clipboard.writeText(user.id)}
+              onClick={() => navigator.clipboard.writeText(user.id.toString())}
             >
               Copy User ID
             </DropdownMenuItem>
