@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { User, columns } from "./components/table/columns.ts";
 import { DataTable } from "./components/table/data-table.tsx";
 import { getApplicants } from "@/services/applicantService";
-import AddApplicant from "./components/table/controls/AddApplicant.tsx";
+import Filter from "./components/filter/Filter.tsx";
 
 export default function Applicant() {
   const [data, setData] = useState<User[]>([]);
@@ -31,10 +31,7 @@ export default function Applicant() {
 
   return (
     <div className="container mx-auto py-10 px-4">
-      <div className="flex justify-between items-center mb-4">
-        <h1 className="text-xl font-bold">Applicant List</h1>
-        <AddApplicant />
-      </div>
+      <Filter />
       <DataTable columns={columns} data={data} />
     </div>
   );
