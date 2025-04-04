@@ -37,6 +37,7 @@ const Add = ({
     middleName: "",
     status: "",
     birthDate: "",
+    age: "", // Added age field
     city: "",
     province: "",
     civilStatus: "",
@@ -80,6 +81,7 @@ const Add = ({
         middleName: "",
         status: "",
         birthDate: "",
+        age: "", // Reset age field
         city: "",
         province: "",
         civilStatus: "",
@@ -170,6 +172,14 @@ const Add = ({
             className="p-2 border rounded-md w-full"
           />
           <input
+            type="number"
+            name="age"
+            value={formData.age}
+            onChange={handleChange}
+            placeholder="Age" // New input field for Age
+            className="p-2 border rounded-md w-full"
+          />
+          <input
             type="text"
             name="city"
             value={formData.city}
@@ -249,7 +259,7 @@ const Add = ({
 };
 
 const Delete = () => {
-  return <></>; // Placeholder for now
+  return <></>;
 };
 
 export default Controls;

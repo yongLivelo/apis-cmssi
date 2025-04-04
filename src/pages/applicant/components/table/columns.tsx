@@ -22,6 +22,7 @@ export type User = {
   middleName: string;
   status: string;
   birthDate: string;
+  age: number; // Added age field
   city: string;
   province: string;
   civilstatus: string;
@@ -58,6 +59,10 @@ export const columns: ColumnDef<User>[] = [
   {
     accessorKey: "birthDate",
     header: "Birth Date",
+  },
+  {
+    accessorKey: "age",
+    header: "Age", // Added age column
   },
   {
     accessorKey: "city",

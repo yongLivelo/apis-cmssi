@@ -7,11 +7,36 @@ import Controls from "./components/controls/controls.tsx";
 
 export default function Applicant() {
   const [data, setData] = useState<User[]>([]);
+  const [filteredData, setFilteredData] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [searchClicked, setSearchClicked] = useState(false);
 
   const handleAddApplicant = (newApplicant: User) => {
     setData((prevData) => [...prevData, newApplicant]);
+    if (searchClicked) {
+      handleSearch({});
+    }
+  };
+
+  const handleSearch = (filters: Partial<User>) => {
+    setSearchClicked(true);
+
+    const noFilters = Object.values(filters).every((value) => !value);
+    if (noFilters) {
+      setFilteredData(data);
+    } else {
+      const filtered = data.filter((applicant) =>
+        Object.entries(filters).every(([key, value]) =>
+          value
+            ? String(applicant[key as keyof User])
+                .toLowerCase()
+                .includes(String(value).toLowerCase())
+            : true
+        )
+      );
+      setFilteredData(filtered);
+    }
   };
 
   useEffect(() => {
@@ -36,9 +61,13 @@ export default function Applicant() {
 
   return (
     <div className="container mx-auto py-10 px-4">
-      <Filter />
+      <Filter onSearch={handleSearch} />
       <Controls onAddApplicant={handleAddApplicant} />
-      <DataTable columns={columns} data={data} />
+      <DataTable
+        columns={columns}
+        data={filteredData}
+        showValues={searchClicked}
+      />
     </div>
   );
 }
