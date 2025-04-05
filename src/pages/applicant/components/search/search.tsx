@@ -7,7 +7,7 @@ function Search() {
   return (
     <div className="p-0 max-w-full w-full bg-gray-50 border border-gray-300">
       <h1 className="text-center text-xl font-bold my-4 text-gray-700">
-        Search Skibidi
+        Search Applicant
       </h1>
       <form className="space-y-6 w-full px-8">
         {/* Personal Information Section */}
