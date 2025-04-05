@@ -13,7 +13,9 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { deleteApplicant } from "@/services/applicantService";
+import {
+  deleteApplicant
+} from "@/services/applicantService.tsx";
 
 export type User = {
   id: number;
@@ -113,7 +115,9 @@ export const columns: ColumnDef<User>[] = [
               Copy User ID
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>Delete</DropdownMenuItem>
+            <DropdownMenuItem onClick={()=> {
+              deleteApplicant(`${user.id}`).then(r => console.log(r))
+            }}>Delete</DropdownMenuItem>
             <DropdownMenuItem>View Details</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

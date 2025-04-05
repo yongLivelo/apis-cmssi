@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { User, columns } from "./components/table/columns.tsx";
 import { DataTable } from "./components/table/data-table.tsx";
 import { getApplicants } from "@/services/applicantService";
-import Filter from "./components/filter/Filter.tsx";
+import Search from "@/pages/applicant/components/search/search.tsx";
 import Controls from "./components/controls/controls.tsx";
 
 export default function Applicant() {
@@ -36,7 +36,7 @@ export default function Applicant() {
 
   return (
     <div className="container mx-auto py-10 px-4">
-      <Filter />
+      <Search />
       <Controls onAddApplicant={handleAddApplicant} />
       <DataTable columns={columns} data={data} />
     </div>

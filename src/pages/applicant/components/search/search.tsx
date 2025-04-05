@@ -3,7 +3,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 
-function Filter() {
+function Search() {
   return (
     <div className="p-0 max-w-full w-full bg-gray-50 border border-gray-300">
       <h1 className="text-center text-xl font-bold my-4 text-gray-700">
@@ -184,7 +184,7 @@ function Filter() {
           </div>
         </fieldset>
 
-        {/* Search Button */}
+        {/* search Button */}
         <div className="flex justify-end px-6 py-4">
           <Button className="bg-blue-500 text-white hover:bg-blue-600 transition px-4 py-2 rounded-md">
             Search
@@ -195,4 +195,4 @@ function Filter() {
   );
 }
 
-export default Filter;
+export default Search;
