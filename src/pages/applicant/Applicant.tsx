@@ -1,13 +1,18 @@
 import { useEffect, useState } from "react";
-import { User, columns } from "./components/table/columns.ts";
+import { User, columns } from "./components/table/columns.tsx";
 import { DataTable } from "./components/table/data-table.tsx";
 import { getApplicants } from "@/services/applicantService";
-import Filter from "./components/filter/Filter.tsx";
+import Search from "@/pages/applicant/components/search/search.tsx";
+import Controls from "./components/controls/controls.tsx";
 
 export default function Applicant() {
   const [data, setData] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+
+  const handleAddApplicant = (newApplicant: User) => {
+    setData((prevData) => [...prevData, newApplicant]);
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -31,7 +36,8 @@ export default function Applicant() {
 
   return (
     <div className="container mx-auto py-10 px-4">
-      <Filter />
+      <Search />
+      <Controls onAddApplicant={handleAddApplicant} />
       <DataTable columns={columns} data={data} />
     </div>
   );
