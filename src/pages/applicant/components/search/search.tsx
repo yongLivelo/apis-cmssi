@@ -7,7 +7,7 @@ function Search() {
   return (
     <div className="p-0 max-w-full w-full bg-gray-50 border border-gray-300">
       <h1 className="text-center text-xl font-bold my-4 text-gray-700">
-        Job Application Form
+        Search Skibidi
       </h1>
       <form className="space-y-6 w-full px-8">
         {/* Personal Information Section */}
@@ -29,12 +29,18 @@ function Search() {
               </div>
               <div>
                 <Label
-                  htmlFor="status"
+                  htmlFor="applicationStatus"
                   className="block text-gray-700 font-medium mb-1"
                 >
-                  Status
+                  Application Status
                 </Label>
-                <Input id="status" type="text" disabled />
+                <select
+                  id="applicationStatus"
+                  className="w-full border border-gray-300 rounded-md px-2 py-1 text-gray-700 text-sm"
+                >
+                  <option value="Pending">Pending</option>
+                  <option value="Confirmed">Confirmed</option>
+                </select>
               </div>
               <div>
                 <Label
@@ -43,7 +49,7 @@ function Search() {
                 >
                   Application Date
                 </Label>
-                <Input id="applicationDate" type="date" disabled />
+                <Input id="applicationDate" type="date" />
               </div>
               <div>
                 <Label
@@ -112,11 +118,9 @@ function Search() {
                 </Label>
                 <select
                   id="civilStatus"
-                  className="w-full border border-gray-300 rounded-md px-2 py-1"
+                  className="w-full border border-gray-300 rounded-md px-2 py-1 text-gray-700 text-sm"
                 >
-                  <option value="" disabled>
-                    Select Civil Status
-                  </option>
+                  <option value="N/A">N/A</option>
                 </select>
               </div>
               <div>
@@ -128,11 +132,9 @@ function Search() {
                 </Label>
                 <select
                   id="trainingStatus"
-                  className="w-full border border-gray-300 rounded-md px-2 py-1"
+                  className="w-full border border-gray-300 rounded-md px-2 py-1 text-gray-700 text-sm"
                 >
-                  <option value="" disabled>
-                    Select Training Status
-                  </option>
+                  <option value="N/A">N/A</option>
                 </select>
               </div>
               <div>
@@ -144,11 +146,9 @@ function Search() {
                 </Label>
                 <select
                   id="desiredPosition"
-                  className="w-full border border-gray-300 rounded-md px-2 py-1"
+                  className="w-full border border-gray-300 rounded-md px-2 py-1 text-gray-700 text-sm"
                 >
-                  <option value="" disabled>
-                    Select Desired Position
-                  </option>
+                  <option value="N/A">N/A</option>
                 </select>
               </div>
               <div>
