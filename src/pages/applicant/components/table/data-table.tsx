@@ -19,11 +19,13 @@ import {
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
+  showValues: boolean;
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
+  showValues,
 }: DataTableProps<TData, TValue>) {
   const table = useReactTable({
     data,
@@ -51,7 +53,7 @@ export function DataTable<TData, TValue>({
           ))}
         </TableHeader>
         <TableBody>
-          {table.getRowModel().rows.length ? (
+          {showValues && table.getRowModel().rows.length ? (
             table.getRowModel().rows.map((row) => (
               <TableRow
                 key={row.id}
@@ -67,7 +69,7 @@ export function DataTable<TData, TValue>({
           ) : (
             <TableRow>
               <TableCell colSpan={columns.length} className="h-24 text-center">
-                No results.
+                {showValues ? "No results." : "No results"}
               </TableCell>
             </TableRow>
           )}
