@@ -3,7 +3,6 @@
 import { ColumnDef, CellContext } from "@tanstack/react-table";
 import { MoreHorizontal } from "lucide-react";
 import { ReactNode } from "react";
-
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -13,9 +12,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import {
-  deleteApplicant
-} from "@/services/applicantService.tsx";
+import { deleteApplicant } from "@/services/applicantService.tsx";
 
 export type User = {
   id: number;
@@ -23,8 +20,8 @@ export type User = {
   applicationStatus: string;
   lastName: string;
   middleName: string;
-  status: string;
   birthDate: string;
+  age: number; // 🔹 Added Age Here
   city: string;
   province: string;
   civilstatus: string;
@@ -33,11 +30,12 @@ export type User = {
   height: number;
   highSchoolGraduate: boolean;
   collegeGraduate: boolean;
-
   actions?: ReactNode;
 };
 
-export const columns: ColumnDef<User>[] = [
+export const getColumns = (
+  onDelete: (id: number) => void
+): ColumnDef<User>[] => [
   {
     accessorKey: "id",
     header: "Id",
@@ -63,6 +61,10 @@ export const columns: ColumnDef<User>[] = [
     header: "Birth Date",
   },
   {
+    accessorKey: "age", // 🔹 Added Age to the Columns
+    header: "Age",
+  },
+  {
     accessorKey: "city",
     header: "City",
   },
@@ -71,7 +73,7 @@ export const columns: ColumnDef<User>[] = [
     header: "Province",
   },
   {
-    accessorKey: "civilStatus",
+    accessorKey: "civilstatus",
     header: "Civil Status",
   },
   {
@@ -115,9 +117,17 @@ export const columns: ColumnDef<User>[] = [
               Copy User ID
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={()=> {
-              deleteApplicant(`${user.id}`).then(r => console.log(r))
-            }}>Delete</DropdownMenuItem>
+            <DropdownMenuItem
+              onClick={() => {
+                onDelete(user.id);
+
+                deleteApplicant(`${user.id}`).catch((err) => {
+                  console.error("Failed to delete applicant:", err);
+                });
+              }}
+            >
+              Delete
+            </DropdownMenuItem>
             <DropdownMenuItem>View Details</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
