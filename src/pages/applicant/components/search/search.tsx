@@ -13,7 +13,8 @@ function Search({ onSearch }: { onSearch: (filters: any) => void }) {
     middleName: "",
     birthDateFrom: "",
     birthDateTo: "",
-    age: "",
+    ageFrom: "",
+    ageTo: "",
     heightFrom: "",
     heightTo: "",
     city: "",
@@ -28,11 +29,10 @@ function Search({ onSearch }: { onSearch: (filters: any) => void }) {
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
-    const target = e.target;
-    const { id, value, type } = target;
+    const { id, value, type } = e.target;
 
     if (type === "checkbox") {
-      const checkbox = target as HTMLInputElement;
+      const checkbox = e.target as HTMLInputElement;
       setFilters((prev) => ({
         ...prev,
         [id]: checkbox.checked,
@@ -61,11 +61,7 @@ function Search({ onSearch }: { onSearch: (filters: any) => void }) {
             {/* Left Column */}
             <div className="space-y-3">
               {[
-                {
-                  label: "Application No.",
-                  id: "id",
-                  type: "number",
-                },
+                { label: "Application No.", id: "id", type: "number" },
                 {
                   label: "Status",
                   id: "applicationStatus",
@@ -77,26 +73,9 @@ function Search({ onSearch }: { onSearch: (filters: any) => void }) {
                   id: "applicationDate",
                   type: "date",
                 },
-                {
-                  label: "Last Name",
-                  id: "lastName",
-                  type: "text",
-                },
-                {
-                  label: "First Name",
-                  id: "firstName",
-                  type: "text",
-                },
-                {
-                  label: "Middle Name",
-                  id: "middleName",
-                  type: "text",
-                },
-                {
-                  label: "Age",
-                  id: "age",
-                  type: "number",
-                },
+                { label: "Last Name", id: "lastName", type: "text" },
+                { label: "First Name", id: "firstName", type: "text" },
+                { label: "Middle Name", id: "middleName", type: "text" },
               ].map((field) => (
                 <div key={field.id} className="flex items-center space-x-4">
                   <Label
@@ -130,21 +109,38 @@ function Search({ onSearch }: { onSearch: (filters: any) => void }) {
                   )}
                 </div>
               ))}
+
+              {/* Age Range */}
+              <div className="flex items-center space-x-4">
+                <Label
+                  htmlFor="ageFrom"
+                  className="w-36 text-right font-medium"
+                >
+                  Age
+                </Label>
+                <Input
+                  id="ageFrom"
+                  type="number"
+                  value={filters.ageFrom}
+                  onChange={handleChange}
+                  className="w-20"
+                />
+                <span>to</span>
+                <Input
+                  id="ageTo"
+                  type="number"
+                  value={filters.ageTo}
+                  onChange={handleChange}
+                  className="w-20"
+                />
+              </div>
             </div>
 
             {/* Right Column */}
             <div className="space-y-3">
               {[
-                {
-                  label: "City/Municipality",
-                  id: "city",
-                  type: "text",
-                },
-                {
-                  label: "Province",
-                  id: "province",
-                  type: "text",
-                },
+                { label: "City/Municipality", id: "city", type: "text" },
+                { label: "Province", id: "province", type: "text" },
                 {
                   label: "Civil Status",
                   id: "civilStatus",

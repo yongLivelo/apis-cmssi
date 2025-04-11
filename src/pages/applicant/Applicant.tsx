@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { User, columns } from "./components/table/columns.tsx";
+import { User, getColumns } from "./components/table/columns.tsx";
 import { DataTable } from "./components/table/data-table.tsx";
 import { getApplicants } from "@/services/applicantService";
 import Search from "@/pages/applicant/components/search/search.tsx";
@@ -19,7 +19,20 @@ export default function Applicant() {
     }
   };
 
-  const handleSearch = (filters: Partial<User>) => {
+  const handleDelete = (id: number) => {
+    const updatedData = data.filter((applicant) => applicant.id !== id);
+    setData(updatedData);
+
+    if (searchClicked) {
+      handleSearch({});
+    } else {
+      setFilteredData(updatedData);
+    }
+  };
+
+  const handleSearch = (
+    filters: Partial<User> & { ageFrom?: string; ageTo?: string }
+  ) => {
     setSearchClicked(true);
 
     const filtered = data.filter((applicant) => {
@@ -42,6 +55,13 @@ export default function Applicant() {
           return applicant.height <= parseInt(value as string);
         }
 
+        if (key === "ageFrom") {
+          return applicant.age >= parseInt(value as string);
+        }
+        if (key === "ageTo") {
+          return applicant.age <= parseInt(value as string);
+        }
+
         return String(fieldValue)
           .toLowerCase()
           .includes(String(value).toLowerCase());
@@ -56,6 +76,7 @@ export default function Applicant() {
       try {
         const applicants = await getApplicants();
         setData(applicants);
+        setFilteredData(applicants);
       } catch (err) {
         console.error("Error fetching applicants:", err);
         setError("Failed to load applicants.");
@@ -76,7 +97,7 @@ export default function Applicant() {
       <Search onSearch={handleSearch} />
       <Controls onAddApplicant={handleAddApplicant} />
       <DataTable
-        columns={columns}
+        columns={getColumns(handleDelete)}
         data={filteredData}
         showValues={searchClicked}
       />
