@@ -1,10 +1,10 @@
-import { useEffect, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 import { User, getColumns } from "./components/table/columns.tsx";
 import { DataTable } from "./components/table/data-table.tsx";
 import { getApplicants } from "@/services/applicantService";
 import Search from "@/pages/applicant/components/search/search.tsx";
 import Controls from "./components/controls/controls.tsx";
-
+export const TableContext = createContext<any>(null);
 export default function Applicant() {
   const [data, setData] = useState<User[]>([]);
   const [filteredData, setFilteredData] = useState<User[]>([]);
@@ -31,7 +31,7 @@ export default function Applicant() {
   };
 
   const handleSearch = (
-    filters: Partial<User> & { ageFrom?: string; ageTo?: string }
+    filters: Partial<User> & { ageFrom?: string; ageTo?: string },
   ) => {
     setSearchClicked(true);
 
@@ -93,14 +93,18 @@ export default function Applicant() {
     return <div className="text-red-500 text-center py-5">{error}</div>;
 
   return (
-    <div className="container mx-auto py-10 px-4">
-      <Search onSearch={handleSearch} />
-      <Controls onAddApplicant={handleAddApplicant} />
-      <DataTable
-        columns={getColumns(handleDelete)}
-        data={filteredData}
-        showValues={searchClicked}
-      />
-    </div>
+    <>
+      <TableContext.Provider value={{ data: data, setData: setData }}>
+        <div className="container mx-auto py-10 px-4">
+          <Search onSearch={handleSearch} />
+          <Controls onAddApplicant={handleAddApplicant} />
+          <DataTable
+            columns={getColumns(handleDelete)}
+            data={filteredData}
+            showValues={searchClicked}
+          />
+        </div>
+      </TableContext.Provider>
+    </>
   );
 }

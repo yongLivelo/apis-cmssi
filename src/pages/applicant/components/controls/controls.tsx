@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import {
   Dialog,
   DialogContent,
@@ -8,6 +8,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
+import { TableContext } from "@/pages/applicant/Applicant.tsx";
 
 function Controls({
   onAddApplicant,
@@ -29,6 +30,8 @@ const Add = ({
 }: {
   onAddApplicant: (newApplicant: any) => void;
 }) => {
+  const table = useContext(TableContext)!;
+  console.log(table);
   const [formData, setFormData] = useState({
     id: "",
     firstName: "",
@@ -50,7 +53,7 @@ const Add = ({
   const [loading, setLoading] = useState(false);
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
   ) => {
     const { name, value, type } = e.target;
 

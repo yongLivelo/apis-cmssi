@@ -2,8 +2,12 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-
+import { TableContext } from "../../Applicant.tsx";
+import { useContext } from "react";
 function Search({ onSearch }: { onSearch: (filters: any) => void }) {
+  const table = useContext(TableContext)!;
+
+  console.log(table);
   const [filters, setFilters] = useState({
     id: "",
     applicationStatus: "",
@@ -27,10 +31,11 @@ function Search({ onSearch }: { onSearch: (filters: any) => void }) {
   });
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
   ) => {
     const { id, value, type } = e.target;
 
+    console.log("type");
     if (type === "checkbox") {
       const checkbox = e.target as HTMLInputElement;
       setFilters((prev) => ({

@@ -10,16 +10,16 @@ const Settings = lazy(() => import("@/pages/settings"));
 export default function App() {
   return (
     <BrowserRouter>
-      <Layout>
-        <Suspense fallback={<div>Loading...</div>}>
-          <Routes>
-            <Route index element={<Home />} />
-            <Route path="applicants" element={<Applicant />} />
-            <Route path="references" element={<References />} />
-            <Route path="settings" element={<Settings />} />
-          </Routes>
-        </Suspense>
-      </Layout>
+      {/*<Layout>*/}
+      <Suspense fallback={<div>Loading...</div>}>
+        <Routes>
+          <Route index element={<Home />} />
+          <Route path="applicants" element={<Applicant />} />
+          <Route path="references" element={<References />} />
+          <Route path="settings" element={<Settings />} />
+        </Routes>
+      </Suspense>
+      {/*</Layout>*/}
     </BrowserRouter>
   );
 }

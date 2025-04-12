@@ -14,3 +14,8 @@ export const deleteApplicant = async (applicationId: string) => {
   const response = await api.delete(`/deleteApplicant/${applicationId}`);
   return response.data;
 };
+
+export const updateApplicant = async (applicationId: string, applicationData: object) => {
+  const response = await api.put(`/updateApplicant/${applicationId}`, applicationData);
+  return response.data;
+}
