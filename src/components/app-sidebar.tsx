@@ -15,12 +15,11 @@ import {
 } from "@/components/ui/sidebar";
 import { useLocation, useNavigate } from "react-router-dom";
 
-// This is sample data.
 const data = {
   versions: ["1.0.1", "1.1.0-alpha", "2.0.0-beta1"],
   navMain: [
     {
-      title: "Welcome to APIS-CMSSI",
+      title: "Welcome",
       url: "#",
       items: [
         {

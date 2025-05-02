@@ -1,15 +1,14 @@
-import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { FormEvent, useContext, useState } from "react";
+import { TableContext } from "@/pages/applicant/Applicant.tsx";
 import { Label } from "@/components/ui/label";
-import { TableContext } from "../../Applicant.tsx";
-import { useContext } from "react";
-function Search({ onSearch }: { onSearch: (filters: any) => void }) {
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+
+export default function Search() {
   const table = useContext(TableContext)!;
 
-  console.log(table);
   const [filters, setFilters] = useState({
-    id: "",
+    applicantId: "",
     applicationStatus: "",
     applicationDate: "",
     lastName: "",
@@ -17,8 +16,7 @@ function Search({ onSearch }: { onSearch: (filters: any) => void }) {
     middleName: "",
     birthDateFrom: "",
     birthDateTo: "",
-    ageFrom: "",
-    ageTo: "",
+    age: "",
     heightFrom: "",
     heightTo: "",
     city: "",
@@ -35,7 +33,6 @@ function Search({ onSearch }: { onSearch: (filters: any) => void }) {
   ) => {
     const { id, value, type } = e.target;
 
-    console.log("type");
     if (type === "checkbox") {
       const checkbox = e.target as HTMLInputElement;
       setFilters((prev) => ({
@@ -50,10 +47,47 @@ function Search({ onSearch }: { onSearch: (filters: any) => void }) {
     }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
-    onSearch(filters);
   };
+
+  const leftFields = [
+    { label: "Application No.", id: "id", type: "number" },
+    {
+      label: "Status",
+      id: "applicationStatus",
+      type: "select",
+      options: ["Pending", "Approved", "Rejected"],
+    },
+    { label: "Application Date", id: "applicationDate", type: "date" },
+    { label: "Last Name", id: "lastName", type: "text" },
+    { label: "First Name", id: "firstName", type: "text" },
+    { label: "Middle Name", id: "middleName", type: "text" },
+    { label: "Age", id: "age", type: "number" },
+  ];
+
+  const rightFields = [
+    { label: "City/Municipality", id: "city", type: "text" },
+    { label: "Province", id: "province", type: "text" },
+    {
+      label: "Civil Status",
+      id: "civilStatus",
+      type: "select",
+      options: ["Single", "Married", "Widowed"],
+    },
+    {
+      label: "Training Status",
+      id: "trainingStatus",
+      type: "select",
+      options: ["Completed", "In Progress", "Not Started"],
+    },
+    {
+      label: "Desired Position",
+      id: "desiredPosition",
+      type: "select",
+      options: ["Developer", "Designer", "Manager"],
+    },
+  ];
 
   return (
     <div className="p-6 bg-gray-50 border border-gray-300 w-full overflow-x-auto">
@@ -65,39 +99,20 @@ function Search({ onSearch }: { onSearch: (filters: any) => void }) {
           <div className="grid grid-cols-2 gap-x-12 gap-y-4">
             {/* Left Column */}
             <div className="space-y-3">
-              {[
-                { label: "Application No.", id: "id", type: "number" },
-                {
-                  label: "Status",
-                  id: "applicationStatus",
-                  type: "select",
-                  options: ["Pending", "Approved", "Rejected"],
-                },
-                {
-                  label: "Application Date",
-                  id: "applicationDate",
-                  type: "date",
-                },
-                { label: "Last Name", id: "lastName", type: "text" },
-                { label: "First Name", id: "firstName", type: "text" },
-                { label: "Middle Name", id: "middleName", type: "text" },
-              ].map((field) => (
-                <div key={field.id} className="flex items-center space-x-4">
-                  <Label
-                    htmlFor={field.id}
-                    className="w-36 text-right font-medium"
-                  >
-                    {field.label}
+              {leftFields.map(({ label, id, type, options }) => (
+                <div key={id} className="flex items-center space-x-4">
+                  <Label htmlFor={id} className="w-36 text-right font-medium">
+                    {label}
                   </Label>
-                  {field.type === "select" ? (
+                  {type === "select" ? (
                     <select
-                      id={field.id}
-                      value={(filters as any)[field.id]}
+                      id={id}
+                      value={(filters as any)[id]}
                       onChange={handleChange}
                       className="w-44 border border-gray-300 rounded-md px-2 py-1"
                     >
                       <option value="">Select</option>
-                      {field.options?.map((opt) => (
+                      {options?.map((opt) => (
                         <option key={opt} value={opt}>
                           {opt}
                         </option>
@@ -105,82 +120,33 @@ function Search({ onSearch }: { onSearch: (filters: any) => void }) {
                     </select>
                   ) : (
                     <Input
-                      id={field.id}
-                      type={field.type}
-                      value={(filters as any)[field.id]}
+                      id={id}
+                      type={type}
+                      value={(filters as any)[id]}
                       onChange={handleChange}
                       className="w-44"
                     />
                   )}
                 </div>
               ))}
-
-              {/* Age Range */}
-              <div className="flex items-center space-x-4">
-                <Label
-                  htmlFor="ageFrom"
-                  className="w-36 text-right font-medium"
-                >
-                  Age
-                </Label>
-                <Input
-                  id="ageFrom"
-                  type="number"
-                  value={filters.ageFrom}
-                  onChange={handleChange}
-                  className="w-20"
-                />
-                <span>to</span>
-                <Input
-                  id="ageTo"
-                  type="number"
-                  value={filters.ageTo}
-                  onChange={handleChange}
-                  className="w-20"
-                />
-              </div>
             </div>
 
             {/* Right Column */}
             <div className="space-y-3">
-              {[
-                { label: "City/Municipality", id: "city", type: "text" },
-                { label: "Province", id: "province", type: "text" },
-                {
-                  label: "Civil Status",
-                  id: "civilStatus",
-                  type: "select",
-                  options: ["Single", "Married", "Widowed"],
-                },
-                {
-                  label: "Training Status",
-                  id: "trainingStatus",
-                  type: "select",
-                  options: ["Completed", "In Progress", "Not Started"],
-                },
-                {
-                  label: "Desired Position",
-                  id: "desiredPosition",
-                  type: "select",
-                  options: ["Developer", "Designer", "Manager"],
-                },
-              ].map((field) => (
-                <div key={field.id} className="flex items-center space-x-4">
-                  <Label
-                    htmlFor={field.id}
-                    className="w-36 text-right font-medium"
-                  >
-                    {field.label}
+              {rightFields.map(({ label, id, type, options }) => (
+                <div key={id} className="flex items-center space-x-4">
+                  <Label htmlFor={id} className="w-36 text-right font-medium">
+                    {label}
                   </Label>
-                  {field.type === "select" ? (
+                  {type === "select" ? (
                     <select
-                      id={field.id}
-                      value={(filters as any)[field.id]}
+                      id={id}
+                      value={(filters as any)[id]}
                       onChange={handleChange}
                       className="w-44 border border-gray-300 rounded-md px-2 py-1"
                     >
                       <option value="">Select</option>
-                      {field.options?.map((opt) => (
+                      {options?.map((opt) => (
                         <option key={opt} value={opt}>
                           {opt}
                         </option>
@@ -188,9 +154,9 @@ function Search({ onSearch }: { onSearch: (filters: any) => void }) {
                     </select>
                   ) : (
                     <Input
-                      id={field.id}
-                      type={field.type}
-                      value={(filters as any)[field.id]}
+                      id={id}
+                      type={type}
+                      value={(filters as any)[id]}
                       onChange={handleChange}
                       className="w-44"
                     />
@@ -248,7 +214,7 @@ function Search({ onSearch }: { onSearch: (filters: any) => void }) {
                 />
               </div>
 
-              {/* Checkboxes */}
+              {/* Education Checkboxes */}
               <div className="flex items-center space-x-4 ml-36 mt-2">
                 <div className="flex items-center space-x-2">
                   <Input
@@ -260,7 +226,6 @@ function Search({ onSearch }: { onSearch: (filters: any) => void }) {
                   />
                   <Label htmlFor="highSchoolGraduate">Highschool Grad</Label>
                 </div>
-
                 <div className="flex items-center space-x-2">
                   <Input
                     id="collegeGraduate"
@@ -276,17 +241,10 @@ function Search({ onSearch }: { onSearch: (filters: any) => void }) {
           </div>
 
           <div className="flex justify-end mt-6">
-            <Button
-              type="submit"
-              className="bg-blue-500 text-white hover:bg-blue-600 transition px-6 py-2 rounded-md"
-            >
-              Search
-            </Button>
+            <Button type="submit">Search</Button>
           </div>
         </form>
       </div>
     </div>
   );
 }
-
-export default Search;

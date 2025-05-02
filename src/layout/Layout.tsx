@@ -14,8 +14,14 @@ import {
   SidebarTrigger,
 } from "@/components/ui/sidebar";
 import { ReactNode } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 
 export default function Layout({ children }: { children: ReactNode }) {
+  const location = useLocation();
+  const navigate = useNavigate();
+  const pathName = location.pathname.split("/");
+  console.log(pathName[pathName.length - 1]);
+
   return (
     <SidebarProvider>
       <AppSidebar />
@@ -26,14 +32,21 @@ export default function Layout({ children }: { children: ReactNode }) {
           <Breadcrumb>
             <BreadcrumbList>
               <BreadcrumbItem className="hidden md:block">
-                <BreadcrumbLink href="#">
-                  Building Your Application
+                <BreadcrumbLink
+                  className="cursor-pointer"
+                  onClick={() => {
+                    navigate(`${pathName[1]}`);
+                  }}
+                >
+                  {pathName[1]}
                 </BreadcrumbLink>
               </BreadcrumbItem>
               <BreadcrumbSeparator className="hidden md:block" />
-              <BreadcrumbItem>
-                <BreadcrumbPage>Data Fetching</BreadcrumbPage>
-              </BreadcrumbItem>
+              {pathName[2] ? (
+                <BreadcrumbItem>
+                  <BreadcrumbPage>{pathName[2]}</BreadcrumbPage>
+                </BreadcrumbItem>
+              ) : null}
             </BreadcrumbList>
           </Breadcrumb>
         </header>
