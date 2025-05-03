@@ -3,7 +3,7 @@ import { TableContext } from "@/pages/applicant/Applicant.tsx";
 import { Button } from "@/components/ui/button.tsx";
 import { useNavigate } from "react-router-dom";
 
-export default function applicantControls() {
+export default function applicant() {
   const table = useContext(TableContext)!;
   const navigate = useNavigate();
   return (
@@ -12,7 +12,7 @@ export default function applicantControls() {
         <div className="flex gap-2">
           <Button
             onClick={() => {
-              navigate("addingApplicant");
+              navigate("adding applicant");
             }}
           >
             Add
@@ -23,7 +23,13 @@ export default function applicantControls() {
         <div className="flex justify-between gap-2">
           <div className="flex gap-2">
             <Button variant="destructive">Delete</Button>
-            <Button>Edit</Button>
+            <Button
+              onClick={() => {
+                navigate(`editing applicant`);
+              }}
+            >
+              Edit
+            </Button>
           </div>
           <div>Selected Applicant no. 69</div>
         </div>

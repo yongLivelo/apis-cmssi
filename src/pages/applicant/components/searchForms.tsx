@@ -97,7 +97,6 @@ export default function SearchForms() {
         </h1>
         <form onSubmit={handleSubmit}>
           <div className="grid grid-cols-2 gap-x-12 gap-y-4">
-            {/* Left Column */}
             <div className="space-y-3">
               {leftFields.map(({ label, id, type, options }) => (
                 <div key={id} className="flex items-center space-x-4">
