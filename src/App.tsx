@@ -14,7 +14,12 @@ export default function App() {
         <Suspense fallback={<div>Loading...</div>}>
           <Routes>
             <Route index element={<Home />} />
-            <Route path="applicants" element={<Applicant />} />
+            <Route path="home" element={<Home />} />
+            <Route path="applicants">
+              <Route index element={<Applicant />} />
+              <Route path="add" element={<div>Add Applicant</div>} />
+              <Route path=":id" element={<div>Applicant Details</div>} />
+            </Route>
             <Route path="references" element={<References />} />
             <Route path="settings" element={<Settings />} />
           </Routes>

@@ -1,4 +1,4 @@
 function References() {
-  return <></>;
+  return <>References Page</>;
 }
 export default References;
