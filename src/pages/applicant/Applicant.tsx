@@ -1,6 +1,6 @@
 import { createContext, useState } from "react";
-import { SearchType } from "./Applicant.type.ts";
-import Controls from "./components/controls.tsx";
+import { SearchType } from "../../types/Applicant.type.ts";
+import Controls from "./components/applicantControls.tsx";
 import SearchForms from "./components/searchForms.tsx";
 import SearchTable from "./components/searchTable.tsx";
 

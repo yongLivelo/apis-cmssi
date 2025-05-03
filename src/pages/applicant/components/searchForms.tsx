@@ -4,7 +4,7 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
-export default function Search() {
+export default function SearchForms() {
   const table = useContext(TableContext)!;
 
   const [filters, setFilters] = useState({
@@ -90,9 +90,9 @@ export default function Search() {
   ];
 
   return (
-    <div className="p-6 bg-gray-50 border border-gray-300 w-full overflow-x-auto">
+    <div className="w-full overflow-x-auto border border-gray-300 bg-gray-50 p-6">
       <div className="min-w-[900px]">
-        <h1 className="text-center text-xl font-bold mb-6 text-gray-700">
+        <h1 className="mb-6 text-center text-xl font-bold text-gray-700">
           Search Applicant Filter
         </h1>
         <form onSubmit={handleSubmit}>
@@ -109,7 +109,7 @@ export default function Search() {
                       id={id}
                       value={(filters as any)[id]}
                       onChange={handleChange}
-                      className="w-44 border border-gray-300 rounded-md px-2 py-1"
+                      className="w-44 rounded-md border border-gray-300 px-2 py-1"
                     >
                       <option value="">Select</option>
                       {options?.map((opt) => (
@@ -143,7 +143,7 @@ export default function Search() {
                       id={id}
                       value={(filters as any)[id]}
                       onChange={handleChange}
-                      className="w-44 border border-gray-300 rounded-md px-2 py-1"
+                      className="w-44 rounded-md border border-gray-300 px-2 py-1"
                     >
                       <option value="">Select</option>
                       {options?.map((opt) => (
@@ -215,7 +215,7 @@ export default function Search() {
               </div>
 
               {/* Education Checkboxes */}
-              <div className="flex items-center space-x-4 ml-36 mt-2">
+              <div className="mt-2 ml-36 flex items-center space-x-4">
                 <div className="flex items-center space-x-2">
                   <Input
                     id="highSchoolGraduate"
@@ -240,7 +240,7 @@ export default function Search() {
             </div>
           </div>
 
-          <div className="flex justify-end mt-6">
+          <div className="mt-6 flex justify-end">
             <Button type="submit">Search</Button>
           </div>
         </form>

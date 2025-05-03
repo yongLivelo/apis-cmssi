@@ -3,7 +3,7 @@ import { TableContext } from "@/pages/applicant/Applicant.tsx";
 import { Button } from "@/components/ui/button.tsx";
 import { useNavigate } from "react-router-dom";
 
-export default function Controls() {
+export default function applicantControls() {
   const table = useContext(TableContext)!;
   const navigate = useNavigate();
   return (
