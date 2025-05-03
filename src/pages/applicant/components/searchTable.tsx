@@ -26,7 +26,7 @@ import {
 } from "@/components/ui/table";
 import { deleteApplicant } from "@/services/applicantService.tsx";
 import { TableContext } from "../Applicant"; // adjust the path accordingly
-import { SearchType } from "../../../types/Applicant.type";
+import SearchType from "@/types/Applicant.type";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 
 // Type for the user data

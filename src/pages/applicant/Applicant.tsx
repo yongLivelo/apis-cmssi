@@ -1,6 +1,6 @@
 import { createContext, useState } from "react";
-import { SearchType } from "../../types/Applicant.type.ts";
-import Controls from "./components/applicantControls.tsx";
+import SearchType from "@/types/Applicant.type.ts";
+import ApplicantControls from "./components/applicantControls.tsx";
 import SearchForms from "./components/searchForms.tsx";
 import SearchTable from "./components/searchTable.tsx";
 
@@ -18,7 +18,7 @@ export default function Applicant() {
     <TableContext.Provider value={{ data, setData }}>
       <div className="container mx-auto p-4">
         <SearchForms />
-        <Controls />
+        <ApplicantControls />
         <SearchTable />
       </div>
     </TableContext.Provider>
