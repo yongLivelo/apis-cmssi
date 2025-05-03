@@ -4,6 +4,7 @@ import { lazy, Suspense } from "react";
 const Layout = lazy(() => import("@/layout"));
 const Home = lazy(() => import("@/pages/home"));
 const Applicant = lazy(() => import("@/pages/applicant"));
+const ApplicantForm = lazy(() => import("@/pages/applicant/applicantForm"));
 const References = lazy(() => import("@/pages/references"));
 const Settings = lazy(() => import("@/pages/settings"));
 
@@ -17,8 +18,8 @@ export default function App() {
             <Route path="home" element={<Home />} />
             <Route path="applicants">
               <Route index element={<Applicant />} />
-              <Route path="add" element={<div>Add Applicant</div>} />
-              <Route path=":id" element={<div>Applicant Details</div>} />
+              <Route path="adding applicant" element={<ApplicantForm />} />
+              <Route path="editing applicant" element={<ApplicantForm />} />
             </Route>
             <Route path="references" element={<References />} />
             <Route path="settings" element={<Settings />} />

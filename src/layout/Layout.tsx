@@ -1,3 +1,6 @@
+import { Fragment, ReactNode, useId } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+
 import { AppSidebar } from "@/components/app-sidebar";
 import {
   Breadcrumb,
@@ -13,15 +16,12 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from "@/components/ui/sidebar";
-import { ReactNode } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
 
 export default function Layout({ children }: { children: ReactNode }) {
   const location = useLocation();
   const navigate = useNavigate();
-  const pathName = location.pathname.split("/");
-  console.log(pathName[pathName.length - 1]);
-
+  const pathName = location.pathname.split("/").filter(Boolean); // Remove empty strings
+  const uniqueId = useId();
   return (
     <SidebarProvider>
       <AppSidebar />
@@ -29,27 +29,37 @@ export default function Layout({ children }: { children: ReactNode }) {
         <header className="flex h-16 shrink-0 items-center gap-2 border-b px-4">
           <SidebarTrigger className="-ml-1" />
           <Separator orientation="vertical" className="mr-2 h-4" />
+
           <Breadcrumb>
             <BreadcrumbList>
-              <BreadcrumbItem className="hidden md:block">
-                <BreadcrumbLink
-                  className="cursor-pointer"
-                  onClick={() => {
-                    navigate(`${pathName[1]}`);
-                  }}
-                >
-                  {pathName[1]}
-                </BreadcrumbLink>
-              </BreadcrumbItem>
-              <BreadcrumbSeparator className="hidden md:block" />
-              {pathName[2] ? (
-                <BreadcrumbItem>
-                  <BreadcrumbPage>{pathName[2]}</BreadcrumbPage>
-                </BreadcrumbItem>
-              ) : null}
+              {pathName.map((item, index) => {
+                const path = `/${pathName.slice(0, index + 1).join("/")}`;
+                const isLast = index === pathName.length - 1;
+
+                return (
+                  <Fragment key={uniqueId}>
+                    <BreadcrumbItem key={uniqueId}>
+                      {isLast ? (
+                        <BreadcrumbPage className="capitalize">
+                          {item.split("%20").join(" ")}
+                        </BreadcrumbPage>
+                      ) : (
+                        <BreadcrumbLink
+                          className="cursor-pointer capitalize"
+                          onClick={() => navigate(path)}
+                        >
+                          {item.split("%20").join(" ")}
+                        </BreadcrumbLink>
+                      )}
+                    </BreadcrumbItem>
+                    {!isLast && <BreadcrumbSeparator />}
+                  </Fragment>
+                );
+              })}
             </BreadcrumbList>
           </Breadcrumb>
         </header>
+
         {children}
       </SidebarInset>
     </SidebarProvider>
