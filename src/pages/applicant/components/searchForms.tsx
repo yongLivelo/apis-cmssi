@@ -26,224 +26,138 @@ export default function SearchForms() {
     desiredPosition: "",
     highSchoolGraduate: false,
     collegeGraduate: false,
+    sex: "",
   });
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
   ) => {
     const { id, value, type } = e.target;
-
-    if (type === "checkbox") {
-      const checkbox = e.target as HTMLInputElement;
-      setFilters((prev) => ({
-        ...prev,
-        [id]: checkbox.checked,
-      }));
-    } else {
-      setFilters((prev) => ({
-        ...prev,
-        [id]: value,
-      }));
-    }
+    const val =
+      type === "checkbox" ? (e.target as HTMLInputElement).checked : value;
+    setFilters((prev) => ({ ...prev, [id]: val }));
   };
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
   };
 
-  const leftFields = [
-    { label: "Application No.", id: "id", type: "number" },
-    {
-      label: "Status",
-      id: "applicationStatus",
-      type: "select",
-      options: ["Pending", "Approved", "Rejected"],
-    },
-    { label: "Application Date", id: "applicationDate", type: "date" },
-    { label: "Last Name", id: "lastName", type: "text" },
-    { label: "First Name", id: "firstName", type: "text" },
-    { label: "Middle Name", id: "middleName", type: "text" },
-    { label: "Age", id: "age", type: "number" },
-  ];
-
-  const rightFields = [
-    { label: "City/Municipality", id: "city", type: "text" },
-    { label: "Province", id: "province", type: "text" },
-    {
-      label: "Civil Status",
-      id: "civilStatus",
-      type: "select",
-      options: ["Single", "Married", "Widowed"],
-    },
-    {
-      label: "Training Status",
-      id: "trainingStatus",
-      type: "select",
-      options: ["Completed", "In Progress", "Not Started"],
-    },
-    {
-      label: "Desired Position",
-      id: "desiredPosition",
-      type: "select",
-      options: ["Developer", "Designer", "Manager"],
-    },
+  const fields = [
+    { key: "applicantId", label: "Application No.", type: "number" },
+    { key: "age", label: "Age", type: "number" },
+    { key: "sex", label: "Sex", type: "text" },
+    { key: "desiredPosition", label: "Desired Position", type: "text" },
+    { key: "firstName", label: "First Name", type: "text" },
+    { key: "middleName", label: "Middle Name", type: "text" },
+    { key: "lastName", label: "Surname", type: "text" },
+    { key: "applicationDate", label: "Application Date", type: "date" },
+    { key: "applicationStatus", label: "Application Status", type: "text" },
+    { key: "trainingStatus", label: "Training Status", type: "text" },
+    { key: "city", label: "City/Municipality", type: "text" },
+    { key: "province", label: "Province", type: "text" },
+    { key: "civilStatus", label: "Civil Status", type: "text" },
   ];
 
   return (
-    <div className="w-full overflow-x-auto border border-gray-300 bg-gray-50 p-6">
-      <div className="min-w-[900px]">
-        <h1 className="mb-6 text-center text-xl font-bold text-gray-700">
-          Search Applicant Filter
-        </h1>
-        <form onSubmit={handleSubmit}>
-          <div className="grid grid-cols-2 gap-x-12 gap-y-4">
-            <div className="space-y-3">
-              {leftFields.map(({ label, id, type, options }) => (
-                <div key={id} className="flex items-center space-x-4">
-                  <Label htmlFor={id} className="w-36 text-right font-medium">
-                    {label}
-                  </Label>
-                  {type === "select" ? (
-                    <select
-                      id={id}
-                      value={(filters as any)[id]}
-                      onChange={handleChange}
-                      className="w-44 rounded-md border border-gray-300 px-2 py-1"
-                    >
-                      <option value="">Select</option>
-                      {options?.map((opt) => (
-                        <option key={opt} value={opt}>
-                          {opt}
-                        </option>
-                      ))}
-                    </select>
-                  ) : (
-                    <Input
-                      id={id}
-                      type={type}
-                      value={(filters as any)[id]}
-                      onChange={handleChange}
-                      className="w-44"
-                    />
-                  )}
-                </div>
-              ))}
+    <div className="border border-gray-300 bg-gray-50 p-6">
+      <h1 className="mb-6 text-center text-xl font-bold text-gray-700">
+        Search Applicant Filter
+      </h1>
+
+      <form onSubmit={handleSubmit}>
+        <div className="grid grid-cols-4">
+          {fields.map(({ key, label, type }) => (
+            <div key={key} className="flex flex-col gap-1 p-4">
+              <Label htmlFor={key} className="text-sm font-medium">
+                {label}
+              </Label>
+              <Input
+                id={key}
+                type={type}
+                value={(filters as any)[key]}
+                onChange={handleChange}
+                placeholder={label}
+              />
             </div>
+          ))}
 
-            {/* Right Column */}
-            <div className="space-y-3">
-              {rightFields.map(({ label, id, type, options }) => (
-                <div key={id} className="flex items-center space-x-4">
-                  <Label htmlFor={id} className="w-36 text-right font-medium">
-                    {label}
-                  </Label>
-                  {type === "select" ? (
-                    <select
-                      id={id}
-                      value={(filters as any)[id]}
-                      onChange={handleChange}
-                      className="w-44 rounded-md border border-gray-300 px-2 py-1"
-                    >
-                      <option value="">Select</option>
-                      {options?.map((opt) => (
-                        <option key={opt} value={opt}>
-                          {opt}
-                        </option>
-                      ))}
-                    </select>
-                  ) : (
-                    <Input
-                      id={id}
-                      type={type}
-                      value={(filters as any)[id]}
-                      onChange={handleChange}
-                      className="w-44"
-                    />
-                  )}
-                </div>
-              ))}
-
-              {/* Birth Date Range */}
-              <div className="flex items-center space-x-4">
-                <Label
-                  htmlFor="birthDateFrom"
-                  className="w-36 text-right font-medium"
-                >
-                  Birth Date
-                </Label>
-                <Input
-                  id="birthDateFrom"
-                  type="date"
-                  value={filters.birthDateFrom}
-                  onChange={handleChange}
-                  className="w-36"
-                />
-                <span>to</span>
-                <Input
-                  id="birthDateTo"
-                  type="date"
-                  value={filters.birthDateTo}
-                  onChange={handleChange}
-                  className="w-36"
-                />
-              </div>
-
-              {/* Height Range */}
-              <div className="flex items-center space-x-4">
-                <Label
-                  htmlFor="heightFrom"
-                  className="w-36 text-right font-medium"
-                >
-                  Height (cm)
-                </Label>
-                <Input
-                  id="heightFrom"
-                  type="number"
-                  value={filters.heightFrom}
-                  onChange={handleChange}
-                  className="w-20"
-                />
-                <span>to</span>
-                <Input
-                  id="heightTo"
-                  type="number"
-                  value={filters.heightTo}
-                  onChange={handleChange}
-                  className="w-20"
-                />
-              </div>
-
-              {/* Education Checkboxes */}
-              <div className="mt-2 ml-36 flex items-center space-x-4">
-                <div className="flex items-center space-x-2">
-                  <Input
-                    id="highSchoolGraduate"
-                    type="checkbox"
-                    checked={filters.highSchoolGraduate}
-                    onChange={handleChange}
-                    className="h-4 w-4"
-                  />
-                  <Label htmlFor="highSchoolGraduate">Highschool Grad</Label>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <Input
-                    id="collegeGraduate"
-                    type="checkbox"
-                    checked={filters.collegeGraduate}
-                    onChange={handleChange}
-                    className="h-4 w-4"
-                  />
-                  <Label htmlFor="collegeGraduate">College Grad</Label>
-                </div>
-              </div>
-            </div>
+          {/* Birth Date Range */}
+          <div className="col-span-2 flex items-center gap-2 px-4 pt-4">
+            <Label htmlFor="birthDateFrom" className="w-40 text-sm font-medium">
+              Birth Date
+            </Label>
+            <Input
+              id="birthDateFrom"
+              type="date"
+              value={filters.birthDateFrom}
+              onChange={handleChange}
+              className="w-36"
+              placeholder="From"
+            />
+            <span className="self-center text-sm">to</span>
+            <Input
+              id="birthDateTo"
+              type="date"
+              value={filters.birthDateTo}
+              onChange={handleChange}
+              className="w-36"
+              placeholder="To"
+            />
           </div>
 
-          <div className="mt-6 flex justify-end">
-            <Button type="submit">Search</Button>
+          {/* Height Range */}
+          <div className="col-span-2 flex items-center gap-2 px-4 pt-4">
+            <Label htmlFor="heightFrom" className="w-40 text-sm font-medium">
+              Height (cm)
+            </Label>
+            <Input
+              id="heightFrom"
+              type="number"
+              value={filters.heightFrom}
+              onChange={handleChange}
+              className="w-24"
+              placeholder="From"
+            />
+            <span className="self-center text-sm">to</span>
+            <Input
+              id="heightTo"
+              type="number"
+              value={filters.heightTo}
+              onChange={handleChange}
+              className="w-24"
+              placeholder="To"
+            />
           </div>
-        </form>
-      </div>
+
+          {/* Education Checkboxes */}
+          <div className="col-span-4 flex items-center gap-6 px-4 pt-2">
+            <div className="flex items-center gap-2">
+              <Input
+                id="highSchoolGraduate"
+                type="checkbox"
+                checked={filters.highSchoolGraduate}
+                onChange={handleChange}
+                className="h-4 w-4"
+              />
+              <Label htmlFor="highSchoolGraduate">Highschool Grad</Label>
+            </div>
+            <div className="flex items-center gap-2">
+              <Input
+                id="collegeGraduate"
+                type="checkbox"
+                checked={filters.collegeGraduate}
+                onChange={handleChange}
+                className="h-4 w-4"
+              />
+              <Label htmlFor="collegeGraduate">College Grad</Label>
+            </div>
+          </div>
+        </div>
+
+        <div className="mt-6 flex justify-end px-4">
+          <Button type="submit">Search</Button>
+        </div>
+      </form>
     </div>
   );
 }
