@@ -1,12 +1,13 @@
-import { FormEvent, useContext, useState } from "react";
-import { TableContext } from "@/pages/applicant/Applicant.tsx";
+import { FormEvent, useState } from "react";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
-export default function SearchForms() {
-  const table = useContext(TableContext)!;
+interface SearchFormsProps {
+  onSearch: (filters: any) => void;
+}
 
+export default function SearchForms({ onSearch }: SearchFormsProps) {
   const [filters, setFilters] = useState({
     applicantId: "",
     applicationStatus: "",
@@ -40,10 +41,11 @@ export default function SearchForms() {
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
+    onSearch(filters);
   };
 
   const fields = [
-    { key: "applicantId", label: "Application No.", type: "number" },
+    { key: "id", label: "Application No.", type: "number" },
     { key: "age", label: "Age", type: "number" },
     { key: "sex", label: "Sex", type: "text" },
     { key: "desiredPosition", label: "Desired Position", type: "text" },
@@ -161,5 +163,3 @@ export default function SearchForms() {
     </div>
   );
 }
-//testing
-// testing 2

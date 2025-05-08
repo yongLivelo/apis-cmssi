@@ -4,7 +4,7 @@ import {
   useReactTable,
   createColumnHelper,
 } from "@tanstack/react-table";
-import { useContext } from "react";
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import {
   Table,
   TableBody,
@@ -13,16 +13,16 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { TableContext } from "../Applicant";
-import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 
-interface UserTableProps {
+interface SearchTableProps {
+  data: any[];
   showValues?: boolean;
 }
 
-export default function SearchTable({ showValues = true }: UserTableProps) {
-  const { data } = useContext(TableContext)!;
-
+export default function SearchTable({
+  data,
+  showValues = true,
+}: SearchTableProps) {
   const columnHelper = createColumnHelper<any>();
 
   const columns = [
