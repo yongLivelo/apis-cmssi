@@ -1,45 +1,85 @@
 import * as React from "react";
-import { FolderCog, Home, Settings, Users } from "lucide-react";
 
-import { NavLinks } from "@/components/nav-links";
-
-import { Sidebar, SidebarContent } from "@/components/ui/sidebar";
+import { VersionSwitcher } from "@/components/version-switcher";
+import {
+  Sidebar,
+  SidebarContent,
+  SidebarGroup,
+  SidebarGroupContent,
+  SidebarGroupLabel,
+  SidebarHeader,
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
+  SidebarRail,
+} from "@/components/ui/sidebar";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const data = {
-  projects: [
+  versions: ["1.0.1", "1.1.0-alpha", "2.0.0-beta1"],
+  navMain: [
     {
-      name: "Home",
-      url: "home",
-      icon: Home,
-    },
-    {
-      name: "Applicants",
-      url: "applicants",
-      icon: Users,
-    },
-
-    {
-      name: "References",
-      url: "references",
-      icon: FolderCog,
-    },
-    {
-      name: "Settings",
-      url: "settings",
-      icon: Settings,
+      title: "Welcome",
+      url: "#",
+      items: [
+        {
+          title: "Home",
+          url: "/home",
+        },
+        {
+          title: "Applicants",
+          url: "/applicants",
+        },
+        {
+          title: "References",
+          url: "/references",
+        },
+        {
+          title: "Settings",
+          url: "/settings",
+        },
+      ],
     },
   ],
 };
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+  const location = useLocation();
+  const navigate = useNavigate();
   return (
-    <Sidebar
-      className="top-(--header-height) h-[calc(100svh-var(--header-height))]!"
-      {...props}
-    >
+    <Sidebar {...props}>
+      <SidebarHeader>
+        <VersionSwitcher
+          versions={data.versions}
+          defaultVersion={data.versions[0]}
+        />
+      </SidebarHeader>
       <SidebarContent>
-        <NavLinks projects={data.projects} />
+        {/* We create a SidebarGroup for each parent. */}
+        {data.navMain.map((item) => (
+          <SidebarGroup key={item.title}>
+            <SidebarGroupLabel>{item.title}</SidebarGroupLabel>
+            <SidebarGroupContent>
+              <SidebarMenu>
+                {item.items.map((item) => {
+                  const isActive = item.url === location.pathname;
+                  return (
+                    <SidebarMenuItem
+                      key={item.title}
+                      onClick={() => navigate(item.url)}
+                    >
+                      <SidebarMenuButton asChild isActive={isActive}>
+                        <span>{item.title}</span>
+                      </SidebarMenuButton>
+                    </SidebarMenuItem>
+                  );
+                })}
+              </SidebarMenu>
+            </SidebarGroupContent>
+          </SidebarGroup>
+        ))}
       </SidebarContent>
+      <SidebarRail />
     </Sidebar>
   );
 }
