@@ -232,6 +232,7 @@ export default function SearchTable({ showValues = true }: UserTableProps) {
       cell: ({ row }) => (
         <Checkbox
           checked={row.getIsSelected()}
+
           onCheckedChange={(value) => row.toggleSelected(!!value)}
           aria-label="Select row"
         />
@@ -240,6 +241,7 @@ export default function SearchTable({ showValues = true }: UserTableProps) {
   ];
 
   const table = useReactTable({
+    enableMultiRowSelection: false,
     data: data,
     columns: columns,
     getCoreRowModel: getCoreRowModel(),

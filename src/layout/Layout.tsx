@@ -37,7 +37,7 @@ export default function Layout({ children }: { children: ReactNode }) {
                 const isLast = index === pathName.length - 1;
 
                 return (
-                  <Fragment key={uniqueId}>
+                  <Fragment key={`${uniqueId}${index}`}>
                     <BreadcrumbItem key={uniqueId}>
                       {isLast ? (
                         <BreadcrumbPage className="capitalize">
