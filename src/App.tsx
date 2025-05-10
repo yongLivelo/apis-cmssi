@@ -1,10 +1,11 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { lazy, Suspense } from "react";
+import { Toaster } from "@/components/ui/sonner";
 
 const Layout = lazy(() => import("@/layout"));
 const Home = lazy(() => import("@/pages/home"));
 const Applicant = lazy(() => import("@/pages/applicant"));
-const ApplicantForm = lazy(() => import("@/pages/applicant/applicantForm"));
+const ApplicantForm = lazy(() => import("@/pages/applicantForm"));
 const References = lazy(() => import("@/pages/references"));
 const Settings = lazy(() => import("@/pages/settings"));
 
@@ -26,6 +27,7 @@ export default function App() {
           </Routes>
         </Suspense>
       </Layout>
+      <Toaster />
     </BrowserRouter>
   );
 }

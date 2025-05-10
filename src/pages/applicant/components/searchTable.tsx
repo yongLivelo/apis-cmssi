@@ -28,6 +28,7 @@ import { deleteApplicant } from "@/services/applicantService.tsx";
 import { TableContext } from "../Applicant"; // adjust the path accordingly
 import SearchType from "@/types/Applicant.type";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
+import { Checkbox } from "@/components/ui/checkbox";
 
 // Type for the user data
 export type User = {
@@ -57,6 +58,18 @@ export default function SearchTable({ showValues = true }: UserTableProps) {
   const { data } = useContext(TableContext)!;
 
   const columns: ColumnDef<any>[] = [
+    {
+      id: "actions",
+      cell: ({ row }) => (
+        <Checkbox
+          checked={row.getCanSelect()}
+          onCheckedChange={(value) => row.toggleSelected(!!value)}
+          aria-label="Select row"
+        />
+      ),
+      enableSorting: false,
+      enableHiding: false,
+    },
     { accessorKey: "id", header: "ID" },
     { accessorKey: "firstName", header: "First Name" },
     { accessorKey: "applicationStatus", header: "Application Status" },
@@ -74,9 +87,14 @@ export default function SearchTable({ showValues = true }: UserTableProps) {
   ];
 
   const table = useReactTable({
+    enableMultiRowSelection: false,
     data: data,
     columns: columns,
     getCoreRowModel: getCoreRowModel(),
+    onRowSelectionChange: getSelection,
+    state: {
+      rowSelection: {},
+    },
   });
 
   return (
