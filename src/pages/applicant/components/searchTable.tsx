@@ -1,12 +1,16 @@
+import * as React from "react";
 import {
   ColumnDef,
   CellContext,
   flexRender,
   getCoreRowModel,
   useReactTable,
+  getPaginationRowModel,
+  getSortedRowModel,
 } from "@tanstack/react-table";
+import { SortingState } from "@tanstack/react-table";
 import { useContext } from "react";
-import { MoreHorizontal } from "lucide-react";
+import { ArrowUpDown, MoreHorizontal } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -56,34 +60,184 @@ interface UserTableProps {
 
 export default function SearchTable({ showValues = true }: UserTableProps) {
   const { data } = useContext(TableContext)!;
-
+  const [sorting, setSorting] = React.useState<SortingState>([]);
+  const [rowSelection, setRowSelection] = React.useState({});
   const columns: ColumnDef<any>[] = [
     {
-      id: "actions",
+      accessorKey: "id",
+      header: ({ column }) => (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          ID
+        </Button>
+      ),
+    },
+    {
+      accessorKey: "firstName",
+      header: ({ column }) => (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          First Name
+        </Button>
+      ),
+    },
+    {
+      accessorKey: "applicationStatus",
+      header: ({ column }) => (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Application Status
+        </Button>
+      ),
+    },
+    {
+      accessorKey: "lastName",
+      header: ({ column }) => (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Last Name
+        </Button>
+      ),
+    },
+    {
+      accessorKey: "middleName",
+      header: ({ column }) => (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Middle Name
+        </Button>
+      ),
+    },
+    {
+      accessorKey: "birthDate",
+      header: ({ column }) => (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Birth Date
+        </Button>
+      ),
+    },
+    {
+      accessorKey: "city",
+      header: ({ column }) => (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          City
+        </Button>
+      ),
+    },
+    {
+      accessorKey: "province",
+      header: ({ column }) => (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Province
+        </Button>
+      ),
+    },
+    {
+      accessorKey: "civilstatus",
+      header: ({ column }) => (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Civil Status
+        </Button>
+      ),
+    },
+    {
+      accessorKey: "trainingStatus",
+      header: ({ column }) => (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Training Status
+        </Button>
+      ),
+    },
+    {
+      accessorKey: "desiredPosition",
+      header: ({ column }) => (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Desired Position
+        </Button>
+      ),
+    },
+    {
+      accessorKey: "height",
+      header: ({ column }) => (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Height
+        </Button>
+      ),
+    },
+    {
+      accessorKey: "highSchoolGraduate",
+      header: ({ column }) => (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Highschool Graduate
+        </Button>
+      ),
+    },
+    {
+      accessorKey: "collegeGraduate",
+      header: ({ column }) => (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          College Graduate
+        </Button>
+      ),
+    },
+    {
+      id: "select",
+      header: ({ table }) => (
+        <Checkbox
+          checked={
+            table.getIsAllPageRowsSelected() ||
+            (table.getIsSomePageRowsSelected() && "indeterminate")
+          }
+          onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+          aria-label="Select all"
+        />
+      ),
       cell: ({ row }) => (
         <Checkbox
-          checked={row.getCanSelect()}
+          checked={row.getIsSelected()}
+
           onCheckedChange={(value) => row.toggleSelected(!!value)}
           aria-label="Select row"
         />
       ),
-      enableSorting: false,
-      enableHiding: false,
     },
-    { accessorKey: "id", header: "ID" },
-    { accessorKey: "firstName", header: "First Name" },
-    { accessorKey: "applicationStatus", header: "Application Status" },
-    { accessorKey: "lastName", header: "Last Name" },
-    { accessorKey: "middleName", header: "Middle Name" },
-    { accessorKey: "birthDate", header: "Birth Date" },
-    { accessorKey: "city", header: "City" },
-    { accessorKey: "province", header: "Province" },
-    { accessorKey: "civilstatus", header: "Civil Status" },
-    { accessorKey: "trainingStatus", header: "Training Status" },
-    { accessorKey: "desiredPosition", header: "Desired Position" },
-    { accessorKey: "height", header: "Height" },
-    { accessorKey: "highSchoolGraduate", header: "Highschool Graduate" },
-    { accessorKey: "collegeGraduate", header: "College Graduate" },
   ];
 
   const table = useReactTable({
@@ -91,63 +245,89 @@ export default function SearchTable({ showValues = true }: UserTableProps) {
     data: data,
     columns: columns,
     getCoreRowModel: getCoreRowModel(),
-    onRowSelectionChange: getSelection,
+    getPaginationRowModel: getPaginationRowModel(),
+    onSortingChange: setSorting,
+    getSortedRowModel: getSortedRowModel(),
+    onRowSelectionChange: setRowSelection,
     state: {
-      rowSelection: {},
+      sorting,
+      rowSelection,
     },
   });
 
   return (
-    <ScrollArea className="h-96 w-full">
-      <div className="overflow-x-auto rounded-md border">
-        <Table>
-          <ScrollBar orientation="horizontal" />
-          <TableHeader className="sticky top-0 w-full">
-            {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id}>
-                {headerGroup.headers.map((header) => (
-                  <TableHead key={header.id}>
-                    {header.isPlaceholder
-                      ? null
-                      : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext(),
-                        )}
-                  </TableHead>
-                ))}
-              </TableRow>
-            ))}
-          </TableHeader>
-          <TableBody>
-            {showValues && table.getRowModel().rows.length ? (
-              table.getRowModel().rows.map((row) => (
-                <TableRow
-                  key={row.id}
-                  data-state={row.getIsSelected() && "selected"}
-                >
-                  {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext(),
-                      )}
-                    </TableCell>
+    <div>
+      <ScrollArea className="h-96 w-full">
+        <div className="overflow-x-auto rounded-md border">
+          <Table>
+            <ScrollBar orientation="horizontal" />
+            <TableHeader className="sticky top-0 w-full">
+              {table.getHeaderGroups().map((headerGroup) => (
+                <TableRow key={headerGroup.id}>
+                  {headerGroup.headers.map((header) => (
+                    <TableHead key={header.id}>
+                      {header.isPlaceholder
+                        ? null
+                        : flexRender(
+                            header.column.columnDef.header,
+                            header.getContext(),
+                          )}
+                    </TableHead>
                   ))}
                 </TableRow>
-              ))
-            ) : (
-              <TableRow>
-                <TableCell
-                  colSpan={columns.length}
-                  className="h-24 text-center"
-                >
-                  {showValues ? "No results." : "No results"}
-                </TableCell>
-              </TableRow>
-            )}
-          </TableBody>
-        </Table>
+              ))}
+            </TableHeader>
+            <TableBody>
+              {showValues && table.getRowModel().rows.length ? (
+                table.getRowModel().rows.map((row) => (
+                  <TableRow
+                    key={row.id}
+                    data-state={row.getIsSelected() && "selected"}
+                  >
+                    {row.getVisibleCells().map((cell) => (
+                      <TableCell key={cell.id}>
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext(),
+                        )}
+                      </TableCell>
+                    ))}
+                  </TableRow>
+                ))
+              ) : (
+                <TableRow>
+                  <TableCell
+                    colSpan={columns.length}
+                    className="h-24 text-center"
+                  >
+                    {showValues ? "No results." : "No results"}
+                  </TableCell>
+                </TableRow>
+              )}
+            </TableBody>
+          </Table>
+        </div>
+      </ScrollArea>
+
+      {/* Pagination Controls */}
+      <div className="flex items-center justify-end space-x-2 py-4">
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={() => table.previousPage()}
+          disabled={!table.getCanPreviousPage()}
+        >
+          Previous
+        </Button>
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={() => table.nextPage()}
+          disabled={!table.getCanNextPage()}
+        >
+          Next
+        </Button>
       </div>
-    </ScrollArea>
+    </div>
   );
 }
