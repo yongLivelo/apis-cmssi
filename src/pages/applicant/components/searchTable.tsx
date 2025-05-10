@@ -32,6 +32,7 @@ import { deleteApplicant } from "@/services/applicantService.tsx";
 import { TableContext } from "../Applicant"; // adjust the path accordingly
 import SearchType from "@/types/Applicant.type";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
+import { Checkbox } from "@/components/ui/checkbox";
 
 // Type for the user data
 export type User = {
@@ -60,7 +61,7 @@ interface UserTableProps {
 export default function SearchTable({ showValues = true }: UserTableProps) {
   const { data } = useContext(TableContext)!;
   const [sorting, setSorting] = React.useState<SortingState>([]);
-
+  const [rowSelection, setRowSelection] = React.useState({});
   const columns: ColumnDef<any>[] = [
     {
       accessorKey: "id",
@@ -216,6 +217,26 @@ export default function SearchTable({ showValues = true }: UserTableProps) {
         </Button>
       ),
     },
+    {
+      id: "select",
+      header: ({ table }) => (
+        <Checkbox
+          checked={
+            table.getIsAllPageRowsSelected() ||
+            (table.getIsSomePageRowsSelected() && "indeterminate")
+          }
+          onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+          aria-label="Select all"
+        />
+      ),
+      cell: ({ row }) => (
+        <Checkbox
+          checked={row.getIsSelected()}
+          onCheckedChange={(value) => row.toggleSelected(!!value)}
+          aria-label="Select row"
+        />
+      ),
+    },
   ];
 
   const table = useReactTable({
@@ -225,8 +246,10 @@ export default function SearchTable({ showValues = true }: UserTableProps) {
     getPaginationRowModel: getPaginationRowModel(),
     onSortingChange: setSorting,
     getSortedRowModel: getSortedRowModel(),
+    onRowSelectionChange: setRowSelection,
     state: {
       sorting,
+      rowSelection,
     },
   });
 
