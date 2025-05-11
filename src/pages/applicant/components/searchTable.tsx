@@ -1,12 +1,25 @@
 import * as React from "react";
 import {
+  ColumnDef,
+  CellContext,
   flexRender,
   getCoreRowModel,
   useReactTable,
-
-  createColumnHelper,
+  getPaginationRowModel,
+  getSortedRowModel,
 } from "@tanstack/react-table";
-import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
+import { SortingState } from "@tanstack/react-table";
+import { useContext } from "react";
+import { ArrowUpDown, MoreHorizontal } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import {
   Table,
   TableBody,
@@ -15,75 +28,216 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-interface SearchTableProps {
-  data: any[];
+import { deleteApplicant } from "@/services/applicantService.tsx";
+import { TableContext } from "../Applicant"; // adjust the path accordingly
+import SearchType from "@/types/Applicant.type";
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
+import { Checkbox } from "@/components/ui/checkbox";
+
+// Type for the user data
+export type User = {
+  id: number;
+  firstName: string;
+  applicationStatus: string;
+  lastName: string;
+  middleName: string;
+  status: string;
+  birthDate: string;
+  city: string;
+  province: string;
+  civilstatus: string;
+  trainingStatus: string;
+  desiredPosition: string;
+  height: number;
+  highSchoolGraduate: boolean;
+  collegeGraduate: boolean;
+  actions?: React.ReactNode;
+};
+
+interface UserTableProps {
   showValues?: boolean;
 }
 
+export default function SearchTable({ showValues = true }: UserTableProps) {
+  const { data } = useContext(TableContext)!;
+  const [sorting, setSorting] = React.useState<SortingState>([]);
+  const [rowSelection, setRowSelection] = React.useState({});
+  const columns: ColumnDef<any>[] = [
+    {
+      accessorKey: "id",
+      header: ({ column }) => (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          ID
+        </Button>
+      ),
+    },
+    {
+      accessorKey: "firstName",
+      header: ({ column }) => (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          First Name
+        </Button>
+      ),
+    },
+    {
+      accessorKey: "applicationStatus",
+      header: ({ column }) => (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Application Status
+        </Button>
+      ),
+    },
+    {
+      accessorKey: "lastName",
+      header: ({ column }) => (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Last Name
+        </Button>
+      ),
+    },
+    {
+      accessorKey: "middleName",
+      header: ({ column }) => (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Middle Name
+        </Button>
+      ),
+    },
+    {
+      accessorKey: "birthDate",
+      header: ({ column }) => (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Birth Date
+        </Button>
+      ),
+    },
+    {
+      accessorKey: "city",
+      header: ({ column }) => (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          City
+        </Button>
+      ),
+    },
+    {
+      accessorKey: "province",
+      header: ({ column }) => (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Province
+        </Button>
+      ),
+    },
+    {
+      accessorKey: "civilstatus",
+      header: ({ column }) => (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Civil Status
+        </Button>
+      ),
+    },
+    {
+      accessorKey: "trainingStatus",
+      header: ({ column }) => (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Training Status
+        </Button>
+      ),
+    },
+    {
+      accessorKey: "desiredPosition",
+      header: ({ column }) => (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Desired Position
+        </Button>
+      ),
+    },
+    {
+      accessorKey: "height",
+      header: ({ column }) => (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Height
+        </Button>
+      ),
+    },
+    {
+      accessorKey: "highSchoolGraduate",
+      header: ({ column }) => (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Highschool Graduate
+        </Button>
+      ),
+    },
+    {
+      accessorKey: "collegeGraduate",
+      header: ({ column }) => (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          College Graduate
+        </Button>
+      ),
+    },
+    {
+      id: "select",
+      header: ({ table }) => (
+        <Checkbox
+          checked={
+            table.getIsAllPageRowsSelected() ||
+            (table.getIsSomePageRowsSelected() && "indeterminate")
+          }
+          onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+          aria-label="Select all"
+        />
+      ),
+      cell: ({ row }) => (
+        <Checkbox
+          checked={row.getIsSelected()}
 
-export default function SearchTable({
-  data,
-  showValues = true,
-}: SearchTableProps) {
-  const columnHelper = createColumnHelper<any>();
-
-  const columns = [
-    columnHelper.accessor("id", {
-      header: () => "ID",
-      cell: (info) => info.getValue(),
-    }),
-    columnHelper.accessor("firstName", {
-      header: () => "First Name",
-      cell: (info) => info.getValue(),
-    }),
-    columnHelper.accessor("applicationStatus", {
-      header: () => "Application Status",
-      cell: (info) => info.getValue(),
-    }),
-    columnHelper.accessor("lastName", {
-      header: () => "Last Name",
-      cell: (info) => info.getValue(),
-    }),
-    columnHelper.accessor("middleName", {
-      header: () => "Middle Name",
-      cell: (info) => info.getValue(),
-    }),
-    columnHelper.accessor("birthDate", {
-      header: () => "Birth Date",
-      cell: (info) => info.getValue(),
-    }),
-    columnHelper.accessor("city", {
-      header: () => "City",
-      cell: (info) => info.getValue(),
-    }),
-    columnHelper.accessor("province", {
-      header: () => "Province",
-      cell: (info) => info.getValue(),
-    }),
-    columnHelper.accessor("civilstatus", {
-      header: () => "Civil Status",
-      cell: (info) => info.getValue(),
-    }),
-    columnHelper.accessor("trainingStatus", {
-      header: () => "Training Status",
-      cell: (info) => info.getValue(),
-    }),
-    columnHelper.accessor("desiredPosition", {
-      header: () => "Desired Position",
-      cell: (info) => info.getValue(),
-    }),
-    columnHelper.accessor("height", {
-      header: () => "Height",
-      cell: (info) => info.getValue(),
-    }),
-    columnHelper.accessor("highSchoolGraduate", {
-      header: () => "HS Graduate",
-      cell: (info) => info.getValue(),
-    }),
-    columnHelper.accessor("collegeGraduate", {
-      header: () => "College Graduate",
-      cell: (info) => info.getValue(),
-    }),
+          onCheckedChange={(value) => row.toggleSelected(!!value)}
+          aria-label="Select row"
+        />
+      ),
+    },
   ];
 
   const table = useReactTable({
@@ -102,62 +256,78 @@ export default function SearchTable({
   });
 
   return (
-    <ScrollArea className="w-full overflow-auto rounded-2xl border shadow-sm">
-      <div className="min-w-[1200px]">
-        <Table className="w-full text-left text-sm">
-          <TableHeader className="sticky top-0 z-10 bg-gray-100">
-            {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id}>
-                {headerGroup.headers.map((header) => (
-                  <TableHead
-                    key={header.id}
-                    className="px-4 py-2 font-medium text-gray-700"
-                  >
-                    {header.isPlaceholder
-                      ? null
-                      : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext(),
-                        )}
-                  </TableHead>
-                ))}
-              </TableRow>
-            ))}
-          </TableHeader>
-          <TableBody>
-            {showValues && table.getRowModel().rows.length ? (
-              table.getRowModel().rows.map((row) => (
-                <TableRow
-                  key={row.id}
-                  className="transition-colors hover:bg-gray-50"
-                >
-                  {row.getVisibleCells().map((cell) => (
-                    <TableCell
-                      key={cell.id}
-                      className="px-4 py-2 whitespace-nowrap text-gray-900"
-                    >
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext(),
-                      )}
-                    </TableCell>
+    <div>
+      <ScrollArea className="h-96 w-full">
+        <div className="overflow-x-auto rounded-md border">
+          <Table>
+            <ScrollBar orientation="horizontal" />
+            <TableHeader className="sticky top-0 w-full">
+              {table.getHeaderGroups().map((headerGroup) => (
+                <TableRow key={headerGroup.id}>
+                  {headerGroup.headers.map((header) => (
+                    <TableHead key={header.id}>
+                      {header.isPlaceholder
+                        ? null
+                        : flexRender(
+                            header.column.columnDef.header,
+                            header.getContext(),
+                          )}
+                    </TableHead>
                   ))}
                 </TableRow>
-              ))
-            ) : (
-              <TableRow>
-                <TableCell
-                  colSpan={columns.length}
-                  className="px-4 py-6 text-center text-gray-500"
-                >
-                  {showValues ? "No results found." : "No results."}
-                </TableCell>
-              </TableRow>
-            )}
-          </TableBody>
-        </Table>
+              ))}
+            </TableHeader>
+            <TableBody>
+              {showValues && table.getRowModel().rows.length ? (
+                table.getRowModel().rows.map((row) => (
+                  <TableRow
+                    key={row.id}
+                    data-state={row.getIsSelected() && "selected"}
+                  >
+                    {row.getVisibleCells().map((cell) => (
+                      <TableCell key={cell.id}>
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext(),
+                        )}
+                      </TableCell>
+                    ))}
+                  </TableRow>
+                ))
+              ) : (
+                <TableRow>
+                  <TableCell
+                    colSpan={columns.length}
+                    className="h-24 text-center"
+                  >
+                    {showValues ? "No results." : "No results"}
+                  </TableCell>
+                </TableRow>
+              )}
+            </TableBody>
+          </Table>
+        </div>
+      </ScrollArea>
+
+      {/* Pagination Controls */}
+      <div className="flex items-center justify-end space-x-2 py-4">
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={() => table.previousPage()}
+          disabled={!table.getCanPreviousPage()}
+        >
+          Previous
+        </Button>
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={() => table.nextPage()}
+          disabled={!table.getCanNextPage()}
+        >
+          Next
+        </Button>
       </div>
-      <ScrollBar orientation="horizontal" />
-    </ScrollArea>
+    </div>
   );
 }
