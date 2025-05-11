@@ -1,7 +1,9 @@
+import * as React from "react";
 import {
   flexRender,
   getCoreRowModel,
   useReactTable,
+
   createColumnHelper,
 } from "@tanstack/react-table";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
@@ -13,11 +15,11 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-
 interface SearchTableProps {
   data: any[];
   showValues?: boolean;
 }
+
 
 export default function SearchTable({
   data,
@@ -85,9 +87,18 @@ export default function SearchTable({
   ];
 
   const table = useReactTable({
+    enableMultiRowSelection: false,
     data: data,
     columns: columns,
     getCoreRowModel: getCoreRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
+    onSortingChange: setSorting,
+    getSortedRowModel: getSortedRowModel(),
+    onRowSelectionChange: setRowSelection,
+    state: {
+      sorting,
+      rowSelection,
+    },
   });
 
   return (
