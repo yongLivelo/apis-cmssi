@@ -10,7 +10,7 @@ import {
 } from "@tanstack/react-table";
 import { SortingState } from "@tanstack/react-table";
 import { useContext } from "react";
-import { ArrowUpDown, MoreHorizontal } from "lucide-react";
+import { ArrowDown, ArrowUp, ArrowUpDown, MoreHorizontal } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -64,160 +64,6 @@ export default function SearchTable({ showValues = true }: UserTableProps) {
   const [rowSelection, setRowSelection] = React.useState({});
   const columns: ColumnDef<any>[] = [
     {
-      accessorKey: "id",
-      header: ({ column }) => (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          ID
-        </Button>
-      ),
-    },
-    {
-      accessorKey: "firstName",
-      header: ({ column }) => (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          First Name
-        </Button>
-      ),
-    },
-    {
-      accessorKey: "applicationStatus",
-      header: ({ column }) => (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Application Status
-        </Button>
-      ),
-    },
-    {
-      accessorKey: "lastName",
-      header: ({ column }) => (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Last Name
-        </Button>
-      ),
-    },
-    {
-      accessorKey: "middleName",
-      header: ({ column }) => (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Middle Name
-        </Button>
-      ),
-    },
-    {
-      accessorKey: "birthDate",
-      header: ({ column }) => (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Birth Date
-        </Button>
-      ),
-    },
-    {
-      accessorKey: "city",
-      header: ({ column }) => (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          City
-        </Button>
-      ),
-    },
-    {
-      accessorKey: "province",
-      header: ({ column }) => (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Province
-        </Button>
-      ),
-    },
-    {
-      accessorKey: "civilstatus",
-      header: ({ column }) => (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Civil Status
-        </Button>
-      ),
-    },
-    {
-      accessorKey: "trainingStatus",
-      header: ({ column }) => (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Training Status
-        </Button>
-      ),
-    },
-    {
-      accessorKey: "desiredPosition",
-      header: ({ column }) => (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Desired Position
-        </Button>
-      ),
-    },
-    {
-      accessorKey: "height",
-      header: ({ column }) => (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Height
-        </Button>
-      ),
-    },
-    {
-      accessorKey: "highSchoolGraduate",
-      header: ({ column }) => (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Highschool Graduate
-        </Button>
-      ),
-    },
-    {
-      accessorKey: "collegeGraduate",
-      header: ({ column }) => (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          College Graduate
-        </Button>
-      ),
-    },
-    {
       id: "select",
       header: ({ table }) => (
         <Checkbox
@@ -237,10 +83,235 @@ export default function SearchTable({ showValues = true }: UserTableProps) {
         />
       ),
     },
+
+    {
+      accessorKey: "id",
+      header: ({ column }) => (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          ID
+          {column.getIsSorted() === "asc" ? (
+            <ArrowUp className="ml-2 h-4 w-4" />
+          ) : column.getIsSorted() === "desc" ? (
+            <ArrowDown className="ml-2 h-4 w-4" />
+          ) : null}
+        </Button>
+      ),
+    },
+    {
+      accessorKey: "firstName",
+      header: ({ column }) => (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          First Name
+          {column.getIsSorted() === "asc" ? (
+            <ArrowUp className="ml-2 h-4 w-4" />
+          ) : column.getIsSorted() === "desc" ? (
+            <ArrowDown className="ml-2 h-4 w-4" />
+          ) : null}
+        </Button>
+      ),
+    },
+    {
+      accessorKey: "applicationStatus",
+      header: ({ column }) => (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Application Status
+          {column.getIsSorted() === "asc" ? (
+            <ArrowUp className="ml-2 h-4 w-4" />
+          ) : column.getIsSorted() === "desc" ? (
+            <ArrowDown className="ml-2 h-4 w-4" />
+          ) : null}
+        </Button>
+      ),
+    },
+    {
+      accessorKey: "lastName",
+      header: ({ column }) => (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Last Name
+          {column.getIsSorted() === "asc" ? (
+            <ArrowUp className="ml-2 h-4 w-4" />
+          ) : column.getIsSorted() === "desc" ? (
+            <ArrowDown className="ml-2 h-4 w-4" />
+          ) : null}
+        </Button>
+      ),
+    },
+    {
+      accessorKey: "middleName",
+      header: ({ column }) => (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Middle Name
+          {column.getIsSorted() === "asc" ? (
+            <ArrowUp className="ml-2 h-4 w-4" />
+          ) : column.getIsSorted() === "desc" ? (
+            <ArrowDown className="ml-2 h-4 w-4" />
+          ) : null}
+        </Button>
+      ),
+    },
+    {
+      accessorKey: "birthDate",
+      header: ({ column }) => (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Birth Date
+          {column.getIsSorted() === "asc" ? (
+            <ArrowUp className="ml-2 h-4 w-4" />
+          ) : column.getIsSorted() === "desc" ? (
+            <ArrowDown className="ml-2 h-4 w-4" />
+          ) : null}
+        </Button>
+      ),
+    },
+    {
+      accessorKey: "city",
+      header: ({ column }) => (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          City
+          {column.getIsSorted() === "asc" ? (
+            <ArrowUp className="ml-2 h-4 w-4" />
+          ) : column.getIsSorted() === "desc" ? (
+            <ArrowDown className="ml-2 h-4 w-4" />
+          ) : null}
+        </Button>
+      ),
+    },
+    {
+      accessorKey: "province",
+      header: ({ column }) => (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Province
+          {column.getIsSorted() === "asc" ? (
+            <ArrowUp className="ml-2 h-4 w-4" />
+          ) : column.getIsSorted() === "desc" ? (
+            <ArrowDown className="ml-2 h-4 w-4" />
+          ) : null}
+        </Button>
+      ),
+    },
+    {
+      accessorKey: "civilstatus",
+      header: ({ column }) => (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Civil Status
+          {column.getIsSorted() === "asc" ? (
+            <ArrowUp className="ml-2 h-4 w-4" />
+          ) : column.getIsSorted() === "desc" ? (
+            <ArrowDown className="ml-2 h-4 w-4" />
+          ) : null}
+        </Button>
+      ),
+    },
+    {
+      accessorKey: "trainingStatus",
+      header: ({ column }) => (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Training Status
+          {column.getIsSorted() === "asc" ? (
+            <ArrowUp className="ml-2 h-4 w-4" />
+          ) : column.getIsSorted() === "desc" ? (
+            <ArrowDown className="ml-2 h-4 w-4" />
+          ) : null}
+        </Button>
+      ),
+    },
+    {
+      accessorKey: "desiredPosition",
+      header: ({ column }) => (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Desired Position
+          {column.getIsSorted() === "asc" ? (
+            <ArrowUp className="ml-2 h-4 w-4" />
+          ) : column.getIsSorted() === "desc" ? (
+            <ArrowDown className="ml-2 h-4 w-4" />
+          ) : null}
+        </Button>
+      ),
+    },
+    {
+      accessorKey: "height",
+      header: ({ column }) => (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Height
+          {column.getIsSorted() === "asc" ? (
+            <ArrowUp className="ml-2 h-4 w-4" />
+          ) : column.getIsSorted() === "desc" ? (
+            <ArrowDown className="ml-2 h-4 w-4" />
+          ) : null}
+        </Button>
+      ),
+    },
+    {
+      accessorKey: "highSchoolGraduate",
+      header: ({ column }) => (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Highschool Graduate
+          {column.getIsSorted() === "asc" ? (
+            <ArrowUp className="ml-2 h-4 w-4" />
+          ) : column.getIsSorted() === "desc" ? (
+            <ArrowDown className="ml-2 h-4 w-4" />
+          ) : null}
+        </Button>
+      ),
+    },
+    {
+      accessorKey: "collegeGraduate",
+      header: ({ column }) => (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          College Graduate
+          {column.getIsSorted() === "asc" ? (
+            <ArrowUp className="ml-2 h-4 w-4" />
+          ) : column.getIsSorted() === "desc" ? (
+            <ArrowDown className="ml-2 h-4 w-4" />
+          ) : null}
+        </Button>
+      ),
+    },
   ];
 
   const table = useReactTable({
-    enableMultiRowSelection: false,
+    enableMultiRowSelection: true,
     data: data,
     columns: columns,
     getCoreRowModel: getCoreRowModel(),
@@ -254,8 +325,17 @@ export default function SearchTable({ showValues = true }: UserTableProps) {
     },
   });
 
+  const selectedRows = table.getSelectedRowModel().rows;
+  const selectedIds = selectedRows.map((row) => row.original.id);
+
   return (
     <div>
+      {selectedIds.length > 0 && (
+        <div className="mb-2 flex justify-end text-sm text-gray-700">
+          Selected Applicant IDs: {selectedIds.join(", ")}
+        </div>
+      )}
+
       <ScrollArea className="h-96 w-full">
         <div className="overflow-x-auto rounded-md border">
           <Table>
@@ -308,24 +388,21 @@ export default function SearchTable({ showValues = true }: UserTableProps) {
         </div>
       </ScrollArea>
 
-      {/* Pagination Controls */}
-      <div className="flex items-center justify-end space-x-2 py-4">
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={() => table.previousPage()}
-          disabled={!table.getCanPreviousPage()}
-        >
-          Previous
-        </Button>
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={() => table.nextPage()}
-          disabled={!table.getCanNextPage()}
-        >
-          Next
-        </Button>
+      <div className="flex items-center justify-start space-x-2 py-4">
+        {Array.from({ length: table.getPageCount() }, (_, i) => (
+          <Button
+            key={i}
+            variant={
+              table.getState().pagination.pageIndex === i
+                ? "default"
+                : "outline"
+            }
+            size="sm"
+            onClick={() => table.setPageIndex(i)}
+          >
+            {i + 1}
+          </Button>
+        ))}
       </div>
     </div>
   );
