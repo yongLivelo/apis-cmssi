@@ -1,13 +1,18 @@
-import { FormEvent, useState } from "react";
+import { FormEvent, useState, useContext, useEffect, useRef } from "react";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { TableContext } from "../Applicant";
+import SearchType from "@/types/Applicant.type";
 
 interface SearchFormsProps {
   onSearch: (filters: any) => void;
 }
 
 export default function SearchForms({ onSearch }: SearchFormsProps) {
+  const { data, setData } = useContext(TableContext)!;
+  const originalData = useRef<SearchType[]>([]);
+
   const [filters, setFilters] = useState({
     applicantId: "",
     applicationStatus: "",
@@ -30,6 +35,12 @@ export default function SearchForms({ onSearch }: SearchFormsProps) {
     sex: "",
   });
 
+  useEffect(() => {
+    if (data.length && originalData.current.length === 0) {
+      originalData.current = data;
+    }
+  }, [data]);
+
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
   ) => {
@@ -42,6 +53,31 @@ export default function SearchForms({ onSearch }: SearchFormsProps) {
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
     onSearch(filters);
+
+    const filtered = originalData.current.filter((item) => {
+      return Object.entries(filters).every(([key, val]) => {
+        if (val === "" || val === false) return true;
+
+        const itemVal = (item as any)[key];
+
+        // Date range filters
+        if (key === "birthDateFrom" && filters.birthDateTo) {
+          const from = new Date(filters.birthDateFrom);
+          const to = new Date(filters.birthDateTo);
+          const date = new Date(item.birthDate);
+          return date >= from && date <= to;
+        }
+
+        if (typeof val === "boolean") return itemVal === val;
+
+        if (typeof itemVal === "string")
+          return itemVal.toLowerCase().includes((val as string).toLowerCase());
+
+        return itemVal == val;
+      });
+    });
+
+    setData(filtered);
   };
 
   const fields = [
