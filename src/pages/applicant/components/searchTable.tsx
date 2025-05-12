@@ -33,6 +33,14 @@ import { TableContext } from "../Applicant"; // adjust the path accordingly
 import SearchType from "@/types/Applicant.type";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { Checkbox } from "@/components/ui/checkbox";
+import {
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "@/components/ui/pagination";
 
 // Type for the user data
 export type User = {
@@ -311,7 +319,7 @@ export default function SearchTable({ showValues = true }: UserTableProps) {
   ];
 
   const table = useReactTable({
-    enableMultiRowSelection: true,
+    enableMultiRowSelection: false,
     data: data,
     columns: columns,
     getCoreRowModel: getCoreRowModel(),
@@ -327,6 +335,37 @@ export default function SearchTable({ showValues = true }: UserTableProps) {
 
   const selectedRows = table.getSelectedRowModel().rows;
   const selectedIds = selectedRows.map((row) => row.original.id);
+
+  function getPaginationRange(current: number, total: number) {
+    const delta = 1;
+    const range = [];
+    const rangeWithDots: (number | string)[] = [];
+    let l = -1;
+
+    for (let i = 1; i <= total; i++) {
+      if (
+        i === 1 ||
+        i === total ||
+        (i >= current - delta && i <= current + delta)
+      ) {
+        range.push(i);
+      }
+    }
+
+    for (let i of range) {
+      if (l !== -1) {
+        if (i - l === 2) {
+          rangeWithDots.push(l + 1);
+        } else if (i - l > 2) {
+          rangeWithDots.push("...");
+        }
+      }
+      rangeWithDots.push(i);
+      l = i;
+    }
+
+    return rangeWithDots;
+  }
 
   return (
     <div>
@@ -388,21 +427,54 @@ export default function SearchTable({ showValues = true }: UserTableProps) {
         </div>
       </ScrollArea>
 
-      <div className="flex items-center justify-start space-x-2 py-4">
-        {Array.from({ length: table.getPageCount() }, (_, i) => (
-          <Button
-            key={i}
-            variant={
-              table.getState().pagination.pageIndex === i
-                ? "default"
-                : "outline"
-            }
-            size="sm"
-            onClick={() => table.setPageIndex(i)}
-          >
-            {i + 1}
-          </Button>
-        ))}
+      <div className="py-4">
+        <Pagination>
+          <PaginationContent>
+            <PaginationItem>
+              <PaginationPrevious
+                href="#"
+                onClick={(e) => {
+                  e.preventDefault();
+                  table.previousPage();
+                }}
+              />
+            </PaginationItem>
+
+            {getPaginationRange(
+              table.getState().pagination.pageIndex + 1,
+              table.getPageCount(),
+            ).map((page, i) => (
+              <PaginationItem key={i}>
+                {typeof page === "string" ? (
+                  <span className="text-muted-foreground px-2">…</span>
+                ) : (
+                  <PaginationLink
+                    href="#"
+                    isActive={
+                      table.getState().pagination.pageIndex === page - 1
+                    }
+                    onClick={(e) => {
+                      e.preventDefault();
+                      table.setPageIndex(page - 1);
+                    }}
+                  >
+                    {page}
+                  </PaginationLink>
+                )}
+              </PaginationItem>
+            ))}
+
+            <PaginationItem>
+              <PaginationNext
+                href="#"
+                onClick={(e) => {
+                  e.preventDefault();
+                  table.nextPage();
+                }}
+              />
+            </PaginationItem>
+          </PaginationContent>
+        </Pagination>
       </div>
     </div>
   );
