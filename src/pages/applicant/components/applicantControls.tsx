@@ -3,7 +3,11 @@ import { TableContext } from "@/pages/applicant/Applicant.tsx";
 import { Button } from "@/components/ui/button.tsx";
 import { useNavigate } from "react-router-dom";
 
-export default function applicantControls() {
+export default function applicantControls({
+  applicantId,
+}: {
+  applicantId: number;
+}) {
   const table = useContext(TableContext)!;
   const navigate = useNavigate();
   return (
@@ -31,7 +35,13 @@ export default function applicantControls() {
               Edit
             </Button>
           </div>
-          <div>Selected Applicant no. 69</div>
+          <div>
+            {applicantId ? (
+              <div>Selected Applicant no. {applicantId}</div>
+            ) : (
+              <div>No Selected</div>
+            )}{" "}
+          </div>
         </div>
       </div>
     </>

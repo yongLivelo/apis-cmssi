@@ -64,25 +64,20 @@ export type User = {
 
 interface UserTableProps {
   showValues?: boolean;
+  setApplicantId?: (id: number) => void;
 }
 
-export default function SearchTable({ showValues = true }: UserTableProps) {
+export default function SearchTable({
+  showValues = true,
+  setApplicantId,
+}: UserTableProps) {
   const { data } = useContext(TableContext)!;
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [rowSelection, setRowSelection] = React.useState({});
   const columns: ColumnDef<any>[] = [
     {
       id: "select",
-      header: ({ table }) => (
-        <Checkbox
-          checked={
-            table.getIsAllPageRowsSelected() ||
-            (table.getIsSomePageRowsSelected() && "indeterminate")
-          }
-          onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-          aria-label="Select all"
-        />
-      ),
+
       cell: ({ row }) => (
         <Checkbox
           checked={row.getIsSelected()}
@@ -318,24 +313,31 @@ export default function SearchTable({ showValues = true }: UserTableProps) {
     },
   ];
 
+  const [pagination, setPagination] = React.useState({
+    pageIndex: 0,
+    pageSize: 50,
+  });
+
   const table = useReactTable({
     enableMultiRowSelection: false,
     data: data,
     columns: columns,
-    getCoreRowModel: getCoreRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
-    onSortingChange: setSorting,
-    getSortedRowModel: getSortedRowModel(),
-    onRowSelectionChange: setRowSelection,
     state: {
       sorting,
       rowSelection,
+      pagination,
     },
+    getCoreRowModel: getCoreRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
+    onSortingChange: setSorting,
+    onPaginationChange: setPagination,
+    getSortedRowModel: getSortedRowModel(),
+    onRowSelectionChange: setRowSelection,
   });
 
   const selectedRows = table.getSelectedRowModel().rows;
   const selectedIds = selectedRows.map((row) => row.original.id);
-
+  setApplicantId?.(selectedIds[0] || 0);
   function getPaginationRange(current: number, total: number) {
     const delta = 1;
     const range = [];
@@ -368,17 +370,10 @@ export default function SearchTable({ showValues = true }: UserTableProps) {
   }
 
   return (
-    <div>
-      {selectedIds.length > 0 && (
-        <div className="mb-2 flex justify-end text-sm text-gray-700">
-          Selected Applicant IDs: {selectedIds.join(", ")}
-        </div>
-      )}
-
-      <ScrollArea className="h-96 w-full">
-        <div className="overflow-x-auto rounded-md border">
+    <div className="relative">
+      <ScrollArea className="h-256 w-full">
+        <div className="overflow-hidden rounded-md border">
           <Table>
-            <ScrollBar orientation="horizontal" />
             <TableHeader className="sticky top-0 w-full">
               {table.getHeaderGroups().map((headerGroup) => (
                 <TableRow key={headerGroup.id}>
@@ -424,9 +419,9 @@ export default function SearchTable({ showValues = true }: UserTableProps) {
               )}
             </TableBody>
           </Table>
-        </div>
+        </div>{" "}
+        <ScrollBar orientation="horizontal" className="absolute" />
       </ScrollArea>
-
       <div className="py-4">
         <Pagination>
           <PaginationContent>
@@ -467,9 +462,18 @@ export default function SearchTable({ showValues = true }: UserTableProps) {
             <PaginationItem>
               <PaginationNext
                 href="#"
+                aria-disabled={false}
                 onClick={(e) => {
                   e.preventDefault();
-                  table.nextPage();
+                  if (
+                    getPaginationRange(
+                      table.getState().pagination.pageIndex + 1,
+                      table.getPageCount(),
+                    ).includes(table.getState().pagination.pageIndex + 1)
+                  ) {
+                    console.log(table.getState().pagination.pageIndex + 1);
+                    table.nextPage();
+                  }
                 }}
               />
             </PaginationItem>

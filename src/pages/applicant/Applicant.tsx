@@ -13,6 +13,7 @@ type TableContextType = {
 export const TableContext = createContext<TableContextType | null>(null);
 
 export default function Applicant() {
+  const [applicantId, setApplicantId] = useState<number>(23);
   const [data, setData] = useState<SearchType[]>([]);
   useEffect(() => {
     const fetchData = async () => {
@@ -31,8 +32,8 @@ export default function Applicant() {
             console.log("Search triggered with filters:", filters)
           }
         />
-        <ApplicantControls />
-        <SearchTable />
+        <ApplicantControls applicantId={applicantId} />
+        <SearchTable setApplicantId={setApplicantId} />
       </div>
     </TableContext.Provider>
   );
