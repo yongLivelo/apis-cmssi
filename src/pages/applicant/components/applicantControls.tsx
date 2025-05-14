@@ -10,6 +10,31 @@ export default function applicantControls({
 }) {
   const table = useContext(TableContext)!;
   const navigate = useNavigate();
+
+  const exportToCSV = () => {
+    if (!table || !table.data) return;
+
+    const headers = Object.keys(table.data[0]).join(",");
+    const rows = table.data
+      .map((row: Record<string, any>) =>
+        Object.values(row)
+          .map((value) => `"${value}"`)
+          .join(","),
+      )
+      .join("\n");
+
+    const csvContent = `${headers}\n${rows}`;
+    const blob = new Blob([csvContent], { type: "text/csv" });
+    const url = URL.createObjectURL(blob);
+
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = "applicants.csv";
+    link.click();
+
+    URL.revokeObjectURL(url);
+  };
+
   return (
     <>
       <div className="flex flex-col gap-2 p-4">
@@ -21,7 +46,7 @@ export default function applicantControls({
           >
             Add
           </Button>
-          <Button>CSV</Button>
+          <Button onClick={exportToCSV}>CSV</Button>
           <Button>Print</Button>
         </div>
         <div className="flex justify-between gap-2">
