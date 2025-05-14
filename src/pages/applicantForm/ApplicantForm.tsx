@@ -6,17 +6,19 @@ import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
+  FormDescription,
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { DatePickerDemo } from "@/components/ui/datepicker";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"; // Corrected import
 import { addApplicant } from "@/services/applicantService";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
+
 type FormFields = Array<{
   name: string;
   label: string;
@@ -25,6 +27,7 @@ type FormFields = Array<{
   description: string;
   selection?: string[];
 }>;
+
 const formSchema = z.object<any>({
   applicationDate: z.string().nonempty("Application Date is required"),
   applicantId: z.preprocess(
@@ -80,7 +83,7 @@ const formFields: FormFields = [
     type: "select",
     placeholder: "",
     description: "",
-    selection: ["male", "felame"],
+    selection: ["male", "female"],
   },
   {
     name: "desiredPosition",
@@ -128,7 +131,6 @@ const formFields: FormFields = [
 
 export default function ApplicantForm() {
   const navigate = useNavigate();
-  // Initialize the form
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {},
@@ -136,8 +138,8 @@ export default function ApplicantForm() {
   const {
     reset,
     formState: { isSubmitting },
-  } = form; // Destructure reset and isSubmitting together
-  // // Submit handler
+  } = form;
+
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
       const response = await addApplicant(values);
@@ -194,6 +196,24 @@ export default function ApplicantForm() {
         {isSubmitting ? "Loading..." : "Submit"}
       </Button>
       <DatePickerDemo />
+
+      {/* Tabs Section */}
+      <div className="mt-6">
+        <Tabs>
+          <TabsList>
+            <TabsTrigger value="personal">Personal</TabsTrigger>
+            <TabsTrigger value="addresses">Addresses</TabsTrigger>
+            <TabsTrigger value="work-experiences">Work Experiences</TabsTrigger>
+            <TabsTrigger value="character-reference">
+              Character Reference
+            </TabsTrigger>
+            <TabsTrigger value="employment">Employment</TabsTrigger>
+            <TabsTrigger value="attachment">Attachment</TabsTrigger>
+            <TabsTrigger value="requirement">Requirement</TabsTrigger>
+            <TabsTrigger value="internet-history">Internet History</TabsTrigger>
+          </TabsList>
+        </Tabs>
+      </div>
     </div>
   );
 }
