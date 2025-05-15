@@ -33,7 +33,12 @@ export default function Layout({ children }: { children: ReactNode }) {
           <Breadcrumb>
             <BreadcrumbList>
               {pathName.map((item, index) => {
-                const path = `/${pathName.slice(0, index + 1).join("/")}`;
+                if (pathName[1] === "editing%20applicant") {
+                  pathName[1] = `editing%20applicant ${pathName[2]}`;
+                  pathName.pop();
+                }
+
+                let path = `/${pathName.slice(0, index + 1).join("/")}`;
                 const isLast = index === pathName.length - 1;
 
                 return (

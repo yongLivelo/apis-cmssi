@@ -19,9 +19,21 @@ export const updateApplicant = async (
   applicationId: string,
   applicationData: object,
 ) => {
-  const response = await api.put(
+  const response = await api.patch(
     `/updateApplicant/${applicationId}`,
     applicationData,
   );
   return response.data;
+};
+
+// ✅ Get upcoming applicant ID
+export const getNextApplicantId = async () => {
+  const response = await api.get(`/getNextApplicantId`);
+  return response.data; // returns a number
+};
+
+// ✅ Get specific applicant by ID
+export const getApplicantById = async (id: string) => {
+  const response = await api.get(`/getApplicant/${id}`);
+  return response.data; // returns an Applicant object
 };

@@ -2,6 +2,14 @@ import { useContext } from "react";
 import { TableContext } from "@/pages/applicant/Applicant.tsx";
 import { Button } from "@/components/ui/button.tsx";
 import { useNavigate } from "react-router-dom";
+import { deleteApplicant, getApplicants } from "@/services/applicantService";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogFooter,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 
 export default function applicantControls({
   applicantId,
@@ -51,11 +59,33 @@ export default function applicantControls({
         </div>
         <div className="flex justify-between gap-2">
           <div className="flex gap-2">
-            <Button variant="destructive">Delete</Button>
+            <Dialog>
+              {" "}
+              <DialogTrigger asChild>
+                <Button variant="destructive">Delete</Button>
+              </DialogTrigger>
+              <DialogContent>
+                Are you sure you want to delete applicant {applicantId}
+                <DialogFooter>
+                  <DialogClose>
+                    <Button
+                      onClick={() => {
+                        deleteApplicant(`${applicantId}`).then(async (res) => {
+                          table.setData(await getApplicants());
+                        });
+                      }}
+                    >
+                      Yes
+                    </Button>
+                  </DialogClose>
+                </DialogFooter>
+              </DialogContent>
+            </Dialog>
             <Button
               onClick={() => {
-                navigate(`editing applicant`);
+                navigate(`editing applicant/${applicantId}`);
               }}
+              disabled={!Boolean(applicantId)}
             >
               Edit
             </Button>

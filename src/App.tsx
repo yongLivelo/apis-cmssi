@@ -20,7 +20,7 @@ export default function App() {
             <Route path="applicants">
               <Route index element={<Applicant />} />
               <Route path="adding applicant" element={<ApplicantForm />} />
-              <Route path="editing applicant" element={<ApplicantForm />} />
+              <Route path="editing applicant/:id" element={<ApplicantForm />} />
             </Route>
             <Route path="references" element={<References />} />
             <Route path="settings" element={<Settings />} />

@@ -371,10 +371,11 @@ export default function SearchTable({
 
   return (
     <div className="relative">
-      <ScrollArea className="h-256 w-full">
-        <div className="overflow-hidden rounded-md border">
-          <Table>
-            <TableHeader className="sticky top-0 w-full">
+      <ScrollArea className="h-256">
+        <div className="relative w-full overflow-auto rounded-md border">
+          {" "}
+          <Table className="w-fit overflow-clip">
+            <TableHeader className="overflow-hidden">
               {table.getHeaderGroups().map((headerGroup) => (
                 <TableRow key={headerGroup.id}>
                   {headerGroup.headers.map((header) => (
