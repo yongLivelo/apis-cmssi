@@ -1,7 +1,6 @@
 import * as React from "react";
 import {
   ColumnDef,
-  CellContext,
   flexRender,
   getCoreRowModel,
   useReactTable,
@@ -10,16 +9,8 @@ import {
 } from "@tanstack/react-table";
 import { SortingState } from "@tanstack/react-table";
 import { useContext } from "react";
-import { ArrowDown, ArrowUp, ArrowUpDown, MoreHorizontal } from "lucide-react";
+import { ArrowDown, ArrowUp } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import {
   Table,
   TableBody,
@@ -29,7 +20,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { deleteApplicant } from "@/services/applicantService.tsx";
-import { TableContext } from "../Applicant"; // adjust the path accordingly
+import { TableContext } from "../Applicant";
 import SearchType from "@/types/Applicant.type";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -42,7 +33,6 @@ import {
   PaginationPrevious,
 } from "@/components/ui/pagination";
 
-// Type for the user data
 export type User = {
   id: number;
   firstName: string;
@@ -77,16 +67,15 @@ export default function SearchTable({
   const columns: ColumnDef<any>[] = [
     {
       id: "select",
-
       cell: ({ row }) => (
         <Checkbox
           checked={row.getIsSelected()}
+          className="bg-gray-200"
           onCheckedChange={(value) => row.toggleSelected(!!value)}
           aria-label="Select row"
         />
       ),
     },
-
     {
       accessorKey: "id",
       header: ({ column }) => (
@@ -338,6 +327,7 @@ export default function SearchTable({
   const selectedRows = table.getSelectedRowModel().rows;
   const selectedIds = selectedRows.map((row) => row.original.id);
   setApplicantId?.(selectedIds[0] || 0);
+
   function getPaginationRange(current: number, total: number) {
     const delta = 1;
     const range = [];
@@ -371,15 +361,14 @@ export default function SearchTable({
 
   return (
     <div className="relative">
-      <ScrollArea className="h-256">
-        <div className="relative w-full overflow-auto rounded-md border">
-          {" "}
-          <Table className="w-fit overflow-clip">
-            <TableHeader className="overflow-hidden">
+      <div className="w-full rounded-md border">
+        <ScrollArea className="w-full overflow-x-auto">
+          <Table className="min-w-[1200px]">
+            <TableHeader>
               {table.getHeaderGroups().map((headerGroup) => (
                 <TableRow key={headerGroup.id}>
                   {headerGroup.headers.map((header) => (
-                    <TableHead key={header.id}>
+                    <TableHead key={header.id} className="text-center">
                       {header.isPlaceholder
                         ? null
                         : flexRender(
@@ -399,7 +388,7 @@ export default function SearchTable({
                     data-state={row.getIsSelected() && "selected"}
                   >
                     {row.getVisibleCells().map((cell) => (
-                      <TableCell key={cell.id}>
+                      <TableCell key={cell.id} className="text-center">
                         {flexRender(
                           cell.column.columnDef.cell,
                           cell.getContext(),
@@ -420,9 +409,9 @@ export default function SearchTable({
               )}
             </TableBody>
           </Table>
-        </div>{" "}
-        <ScrollBar orientation="horizontal" className="absolute" />
-      </ScrollArea>
+          <ScrollBar orientation="horizontal" />
+        </ScrollArea>
+      </div>
       <div className="py-4">
         <Pagination>
           <PaginationContent>
@@ -435,7 +424,6 @@ export default function SearchTable({
                 }}
               />
             </PaginationItem>
-
             {getPaginationRange(
               table.getState().pagination.pageIndex + 1,
               table.getPageCount(),
@@ -459,7 +447,6 @@ export default function SearchTable({
                 )}
               </PaginationItem>
             ))}
-
             <PaginationItem>
               <PaginationNext
                 href="#"
@@ -472,7 +459,6 @@ export default function SearchTable({
                       table.getPageCount(),
                     ).includes(table.getState().pagination.pageIndex + 1)
                   ) {
-                    console.log(table.getState().pagination.pageIndex + 1);
                     table.nextPage();
                   }
                 }}

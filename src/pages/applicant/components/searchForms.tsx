@@ -60,7 +60,6 @@ export default function SearchForms({ onSearch }: SearchFormsProps) {
 
         const itemVal = (item as any)[key];
 
-        // Date range filters
         if (key === "birthDateFrom" && filters.birthDateTo) {
           const from = new Date(filters.birthDateFrom);
           const to = new Date(filters.birthDateTo);
@@ -81,31 +80,31 @@ export default function SearchForms({ onSearch }: SearchFormsProps) {
   };
 
   const fields = [
-    { key: "id", label: "Application No.", type: "number" },
-    { key: "age", label: "Age", type: "number" },
-    { key: "sex", label: "Sex", type: "text" },
-    { key: "desiredPosition", label: "Desired Position", type: "text" },
+    { key: "lastName", label: "Last Name", type: "text" },
     { key: "firstName", label: "First Name", type: "text" },
     { key: "middleName", label: "Middle Name", type: "text" },
-    { key: "lastName", label: "Surname", type: "text" },
-    { key: "applicationDate", label: "Application Date", type: "date" },
+    { key: "id", label: "Applicant Number", type: "number" },
+    { key: "age", label: "Age", type: "number" },
     { key: "applicationStatus", label: "Application Status", type: "text" },
+    { key: "applicationDate", label: "Application Date", type: "date" },
     { key: "trainingStatus", label: "Training Status", type: "text" },
+    { key: "desiredPosition", label: "Desired Position", type: "text" },
     { key: "city", label: "City/Municipality", type: "text" },
     { key: "province", label: "Province", type: "text" },
     { key: "civilStatus", label: "Civil Status", type: "text" },
+    { key: "sex", label: "Sex", type: "text" },
   ];
 
   return (
     <div className="border border-gray-300 bg-gray-50 p-6">
-      <h1 className="mb-6 text-center text-xl font-bold text-gray-700">
+      <h1 className="mb-4 text-center text-xl font-bold text-gray-700">
         Search Applicant Filter
       </h1>
 
       <form onSubmit={handleSubmit}>
-        <div className="grid grid-cols-4">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
           {fields.map(({ key, label, type }) => (
-            <div key={key} className="flex flex-col gap-1 p-4">
+            <div key={key} className="flex flex-col">
               <Label htmlFor={key} className="text-sm font-medium">
                 {label}
               </Label>
@@ -120,55 +119,53 @@ export default function SearchForms({ onSearch }: SearchFormsProps) {
           ))}
 
           {/* Birth Date Range */}
-          <div className="col-span-2 flex items-center gap-2 px-4 pt-4">
-            <Label htmlFor="birthDateFrom" className="w-40 text-sm font-medium">
-              Birth Date
+          <div className="col-span-full flex flex-col md:col-span-2">
+            <Label className="text-sm font-medium">
+              Birth Date (From - To)
             </Label>
-            <Input
-              id="birthDateFrom"
-              type="date"
-              value={filters.birthDateFrom}
-              onChange={handleChange}
-              className="w-36"
-              placeholder="From"
-            />
-            <span className="self-center text-sm">to</span>
-            <Input
-              id="birthDateTo"
-              type="date"
-              value={filters.birthDateTo}
-              onChange={handleChange}
-              className="w-36"
-              placeholder="To"
-            />
+            <div className="flex gap-2">
+              <Input
+                id="birthDateFrom"
+                type="date"
+                value={filters.birthDateFrom}
+                onChange={handleChange}
+                className="w-full"
+              />
+              <Input
+                id="birthDateTo"
+                type="date"
+                value={filters.birthDateTo}
+                onChange={handleChange}
+                className="w-full"
+              />
+            </div>
           </div>
 
           {/* Height Range */}
-          <div className="col-span-2 flex items-center gap-2 px-4 pt-4">
-            <Label htmlFor="heightFrom" className="w-40 text-sm font-medium">
-              Height (cm)
+          <div className="col-span-full flex flex-col md:col-span-2">
+            <Label className="text-sm font-medium">
+              Height (cm) (From - To)
             </Label>
-            <Input
-              id="heightFrom"
-              type="number"
-              value={filters.heightFrom}
-              onChange={handleChange}
-              className="w-24"
-              placeholder="From"
-            />
-            <span className="self-center text-sm">to</span>
-            <Input
-              id="heightTo"
-              type="number"
-              value={filters.heightTo}
-              onChange={handleChange}
-              className="w-24"
-              placeholder="To"
-            />
+            <div className="flex gap-2">
+              <Input
+                id="heightFrom"
+                type="number"
+                value={filters.heightFrom}
+                onChange={handleChange}
+                className="w-full"
+              />
+              <Input
+                id="heightTo"
+                type="number"
+                value={filters.heightTo}
+                onChange={handleChange}
+                className="w-full"
+              />
+            </div>
           </div>
 
-          {/* Education Checkboxes */}
-          <div className="col-span-4 flex items-center gap-6 px-4 pt-2">
+          {/* Checkboxes */}
+          <div className="col-span-full flex flex-wrap items-center gap-6">
             <div className="flex items-center gap-2">
               <Input
                 id="highSchoolGraduate"
@@ -177,7 +174,7 @@ export default function SearchForms({ onSearch }: SearchFormsProps) {
                 onChange={handleChange}
                 className="h-4 w-4"
               />
-              <Label htmlFor="highSchoolGraduate">Highschool Grad</Label>
+              <Label htmlFor="highSchoolGraduate">High School Graduate</Label>
             </div>
             <div className="flex items-center gap-2">
               <Input
@@ -187,13 +184,14 @@ export default function SearchForms({ onSearch }: SearchFormsProps) {
                 onChange={handleChange}
                 className="h-4 w-4"
               />
-              <Label htmlFor="collegeGraduate">College Grad</Label>
+              <Label htmlFor="collegeGraduate">College Graduate</Label>
+            </div>
+
+            {/* Submit Button aligned with checkboxes for closer access */}
+            <div className="ml-auto">
+              <Button type="submit">Search</Button>
             </div>
           </div>
-        </div>
-
-        <div className="mt-6 flex justify-end px-4">
-          <Button type="submit">Search</Button>
         </div>
       </form>
     </div>

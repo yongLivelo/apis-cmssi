@@ -43,6 +43,56 @@ export default function applicantControls({
     URL.revokeObjectURL(url);
   };
 
+  // Print only the table data
+  const printTable = () => {
+    if (!table || !table.data) return;
+
+    const headers = Object.keys(table.data[0]);
+    const rows = table.data;
+
+    const tableHtml = `
+      <table border="1" style="border-collapse:collapse;width:100%;font-family:sans-serif;">
+        <thead>
+          <tr>${headers.map((h) => `<th>${h}</th>`).join("")}</tr>
+        </thead>
+        <tbody>
+          ${rows
+            .map(
+              (row: Record<string, any>) =>
+                `<tr>${headers.map((h) => `<td>${row[h]}</td>`).join("")}</tr>`,
+            )
+            .join("")}
+        </tbody>
+      </table>
+    `;
+
+    const printWindow = window.open("", "_blank");
+    if (printWindow) {
+      printWindow.document.write(`
+        <html>
+          <head>
+            <title>Print Table</title>
+            <style>
+              body { margin: 40px; }
+              table { font-size: 14px; }
+              th, td { padding: 8px 12px; }
+            </style>
+          </head>
+          <body>
+            ${tableHtml}
+            <script>
+              window.onload = function() {
+                window.print();
+                window.onafterprint = function() { window.close(); };
+              };
+            </script>
+          </body>
+        </html>
+      `);
+      printWindow.document.close();
+    }
+  };
+
   return (
     <>
       <div className="flex flex-col gap-2 p-4">
@@ -55,7 +105,7 @@ export default function applicantControls({
             Add
           </Button>
           <Button onClick={exportToCSV}>CSV</Button>
-          <Button>Print</Button>
+          <Button onClick={printTable}>Print</Button>
         </div>
         <div className="flex justify-between gap-2">
           <div className="flex gap-2">
