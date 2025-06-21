@@ -1,4 +1,3 @@
-function References() {
-  return <>References Page</>;
+export default function References() {
+  return <>References</>;
 }
-export default References;

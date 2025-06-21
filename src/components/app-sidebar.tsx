@@ -1,85 +1,77 @@
 import * as React from "react";
+import { Home, FileUser, Settings2, BookMarked } from "lucide-react";
 
-import { VersionSwitcher } from "@/components/version-switcher";
+import { NavMain } from "@/components/nav-main";
+import { NavUser } from "@/components/nav-user";
 import {
   Sidebar,
   SidebarContent,
-  SidebarGroup,
-  SidebarGroupContent,
-  SidebarGroupLabel,
+  SidebarFooter,
   SidebarHeader,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-  SidebarRail,
 } from "@/components/ui/sidebar";
-import { useLocation, useNavigate } from "react-router-dom";
 
 const data = {
-  versions: ["1.0.1", "1.1.0-alpha", "2.0.0-beta1"],
+  user: {
+    name: "Julio Livelo",
+    email: "julioeduardolivelo@gmail.com",
+    avatar: "/avatars/shadcn.svg",
+  },
   navMain: [
     {
-      title: "Welcome",
-      url: "#",
-      items: [
-        {
-          title: "Home",
-          url: "/home",
-        },
-        {
-          title: "Applicants",
-          url: "/applicants",
-        },
-        {
-          title: "References",
-          url: "/references",
-        },
-        {
-          title: "Settings",
-          url: "/settings",
-        },
-      ],
+      title: "Home",
+      url: "Home",
+      icon: Home,
+      isActive: true,
+    },
+    {
+      title: "Applicant",
+      url: "Applicants",
+      icon: FileUser,
+    },
+    {
+      title: "References",
+      url: "References",
+      icon: BookMarked,
+    },
+    {
+      title: "Settings",
+      url: "Settings",
+      icon: Settings2,
     },
   ],
 };
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
-  const location = useLocation();
-  const navigate = useNavigate();
   return (
-    <Sidebar {...props}>
+    <Sidebar variant="inset" {...props}>
       <SidebarHeader>
-        <VersionSwitcher
-          versions={data.versions}
-          defaultVersion={data.versions[0]}
-        />
+        <SidebarMenu>
+          <SidebarMenuItem>
+            <SidebarMenuButton size="lg" asChild>
+              <a href="#">
+                <div className="border-2 text-sidebar-primary-foreground flex aspect-square size-12 items-center justify-center rounded-lg">
+                  <img src="vite.svg" alt="logo" />
+                </div>
+                <div className="grid flex-1 text-left text-sm leading-tight">
+                  <span className="truncate font-medium">APIS</span>
+                  <p className="text-xs">
+                    Application Personal Information System
+                  </p>
+                </div>
+              </a>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+        </SidebarMenu>
       </SidebarHeader>
       <SidebarContent>
-        {/* We create a SidebarGroup for each parent. */}
-        {data.navMain.map((item) => (
-          <SidebarGroup key={item.title}>
-            <SidebarGroupLabel>{item.title}</SidebarGroupLabel>
-            <SidebarGroupContent>
-              <SidebarMenu>
-                {item.items.map((item) => {
-                  const isActive = item.url === location.pathname;
-                  return (
-                    <SidebarMenuItem
-                      key={item.title}
-                      onClick={() => navigate(item.url)}
-                    >
-                      <SidebarMenuButton asChild isActive={isActive}>
-                        <span>{item.title}</span>
-                      </SidebarMenuButton>
-                    </SidebarMenuItem>
-                  );
-                })}
-              </SidebarMenu>
-            </SidebarGroupContent>
-          </SidebarGroup>
-        ))}
+        <NavMain items={data.navMain} />
       </SidebarContent>
-      <SidebarRail />
+      <SidebarFooter>
+        <NavUser user={data.user} />
+      </SidebarFooter>
     </Sidebar>
   );
 }
