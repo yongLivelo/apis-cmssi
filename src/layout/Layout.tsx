@@ -1,40 +1,56 @@
-import { AppShell, Group, Burger, NavLink } from "@mantine/core";
-import { type ReactNode, useState } from "react";
-import { FaBeer } from "react-icons/fa";
-import { useNavigate } from "react-router-dom";
+import { AppShell, Group, Burger, NavLink, Box } from "@mantine/core";
+import { type ReactNode } from "react";
+import { BsFillPeopleFill, BsFillHouseDoorFill } from "react-icons/bs";
+import { useNavigate, useLocation } from "react-router-dom";
+import { useDisclosure } from "@mantine/hooks";
 
 function Layout({ children }: { children: ReactNode }) {
-  const [opened, setOpened] = useState(true);
+  const [opened, { toggle }] = useDisclosure();
   const navigate = useNavigate();
-  function toggle() {
-    setOpened((curr) => !curr);
-  }
+  const location = useLocation();
+
   return (
     <>
       <AppShell
         header={{ height: 60 }}
-        navbar={{ width: opened ? 300 : 50, breakpoint: "xs" }}
+        navbar={{
+          width: opened ? 300 : 55,
+          breakpoint: "xs",
+          collapsed: { mobile: !opened },
+        }}
         padding="md"
+        styles={{
+          navbar: {
+            transition: "transform 250ms ease, width 250ms ease",
+          },
+        }}
       >
         <AppShell.Header>
           <Group h="100%" px="md">
             <Burger opened={opened} onClick={toggle} size="sm"></Burger>
           </Group>
         </AppShell.Header>
-        <AppShell.Navbar style={{ transition: "width 0.2s ease" }}>
+        <AppShell.Navbar>
           <NavLink
             onClick={() => navigate("/")}
-            leftSection={<FaBeer size={30} />}
-            label={opened ? "Customers" : ""}
+            leftSection={
+              <Box>
+                <BsFillHouseDoorFill size={30} />
+              </Box>
+            }
+            label={"Home"}
+            active={location.pathname === "/"}
           />
           <NavLink
             onClick={() => navigate("/applicant")}
-            leftSection={<FaBeer size={30} />}
-            label={opened ? "Accounts" : ""}
-            active={true}
+            leftSection={<BsFillPeopleFill size={30} />}
+            label={"Applicant"}
+            active={location.pathname === "/applicant"}
           />
         </AppShell.Navbar>
-        <AppShell.Main>{children}</AppShell.Main>
+        <AppShell.Main bg="gray.2" style={{ height: "100vh" }}>
+          {children}
+        </AppShell.Main>
       </AppShell>
     </>
   );
