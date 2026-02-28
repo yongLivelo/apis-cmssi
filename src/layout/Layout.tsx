@@ -1,21 +1,43 @@
-import { AppSidebar } from "@/components/app-sidebar";
-import { SiteHeader } from "@/components/site-header";
-import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
+import { AppShell, Group, Burger, NavLink } from "@mantine/core";
+import { type ReactNode, useState } from "react";
+import { FaBeer } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 
-export default function Layout({ children }: { children: React.ReactNode }) {
+function Layout({ children }: { children: ReactNode }) {
+  const [opened, setOpened] = useState(true);
+  const navigate = useNavigate();
+  function toggle() {
+    setOpened((curr) => !curr);
+  }
   return (
-    <div className="[--header-height:calc(theme(spacing.14))]">
-      <SidebarProvider className="flex flex-col">
-        <SiteHeader />
-        <div className="flex flex-1">
-          <AppSidebar />
-          <SidebarInset>
-            <div className="bg-accent h-full">{children}</div>
-          </SidebarInset>
-        </div>
-        div
-      </SidebarProvider>
-      <div></div>
-    </div>
+    <>
+      <AppShell
+        header={{ height: 60 }}
+        navbar={{ width: opened ? 300 : 50, breakpoint: "xs" }}
+        padding="md"
+      >
+        <AppShell.Header>
+          <Group h="100%" px="md">
+            <Burger opened={opened} onClick={toggle} size="sm"></Burger>
+          </Group>
+        </AppShell.Header>
+        <AppShell.Navbar style={{ transition: "width 0.2s ease" }}>
+          <NavLink
+            onClick={() => navigate("/")}
+            leftSection={<FaBeer size={30} />}
+            label={opened ? "Customers" : ""}
+          />
+          <NavLink
+            onClick={() => navigate("/applicant")}
+            leftSection={<FaBeer size={30} />}
+            label={opened ? "Accounts" : ""}
+            active={true}
+          />
+        </AppShell.Navbar>
+        <AppShell.Main>{children}</AppShell.Main>
+      </AppShell>
+    </>
   );
 }
+
+export default Layout;
