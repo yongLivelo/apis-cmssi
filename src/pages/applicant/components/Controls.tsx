@@ -5,10 +5,12 @@ import { useDisclosure } from "@mantine/hooks";
 
 function Controls({
   selected = [],
-  fetchData,
+  search = {},
+  fetchApplicants,
 }: {
   selected: any[];
-  fetchData: () => Promise<void>;
+  search?: object;
+  fetchApplicants: (searchCriteria: object) => Promise<void>;
 }) {
   const navigate = useNavigate();
   const [opened, { open, close }] = useDisclosure(false);
@@ -16,7 +18,7 @@ function Controls({
   const handleDelete = async () => {
     try {
       await Promise.all(selected.map((item) => deleteApplicant(item.id)));
-      await fetchData();
+      await fetchApplicants(search);
       close();
     } catch (err) {
       console.error("Delete error:", err);
@@ -47,7 +49,7 @@ function Controls({
         </Button>
 
         <Button
-          onClick={() => navigate("/applicant/edit")}
+          onClick={() => navigate(`/applicant/edit/${selected[0].id}`)}
           color="green"
           disabled={selected.length !== 1}
         >

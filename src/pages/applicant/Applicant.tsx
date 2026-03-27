@@ -3,17 +3,18 @@ import Search from "@/pages/applicant/components/Search.tsx";
 import Controls from "@/pages/applicant/components/Controls.tsx";
 import Table from "@/pages/applicant/components/Table.tsx";
 import { useState } from "react";
-import { getApplicants } from "@/services/applicantService.tsx";
+import { searchApplicants } from "@/services/applicantService.tsx";
 
 function Applicant() {
   const [selected, setSelected] = useState<any>();
   const [fetching, setFetching] = useState(false);
   const [allData, setAllData] = useState<any[]>([]);
+  const [search, setSearch] = useState<object>();
 
-  const fetchData = async () => {
+  const fetchApplicants = async (searchCriteria: object) => {
     setFetching(true);
     try {
-      const applicants = await getApplicants();
+      const applicants = await searchApplicants(searchCriteria);
       setAllData(applicants);
       setFetching(false);
     } catch (err) {
@@ -26,10 +27,14 @@ function Applicant() {
       <Container>
         <SimpleGrid cols={1}>
           <Paper p="sm" bg="white" radius="sm">
-            <Search fetchData={fetchData} />
+            <Search setSearch={setSearch} fetchApplicants={fetchApplicants} />
           </Paper>
           <Paper p="sm" bg="white" radius="sm">
-            <Controls fetchData={fetchData} selected={selected} />
+            <Controls
+              search={search}
+              fetchApplicants={fetchApplicants}
+              selected={selected}
+            />
           </Paper>
           <Paper p="sm" bg="white" radius="sm">
             <Table

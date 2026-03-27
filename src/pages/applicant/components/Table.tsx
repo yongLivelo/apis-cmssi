@@ -1,7 +1,7 @@
 "use client";
-import { DataTable } from "mantine-datatable";
+import { DataTable, type DataTableSortStatus } from "mantine-datatable";
 import { type Dispatch, type SetStateAction, useEffect, useState } from "react";
-
+import { sortBy } from "lodash";
 const PAGE_SIZE = 10;
 
 export function Table({
@@ -24,6 +24,18 @@ export function Table({
     setData(allData.slice(from, to));
   }, [page, allData]);
 
+  const [sortStatus, setSortStatus] = useState<DataTableSortStatus<any>>({
+    columnAccessor: "name",
+    direction: "asc",
+  });
+
+  useEffect(() => {
+    const sortedData = sortBy(data, sortStatus.columnAccessor);
+    setData(
+      sortStatus.direction === "desc" ? sortedData.reverse() : sortedData,
+    );
+  }, [sortStatus]);
+
   return (
     <DataTable
       striped
@@ -43,9 +55,12 @@ export function Table({
         {
           accessor: "id",
           title: "#",
+          sortable: true,
         },
-        { accessor: "lastName" },
+        { accessor: "lastName", sortable: true },
       ]}
+      sortStatus={sortStatus}
+      onSortStatusChange={setSortStatus}
     />
   );
 }

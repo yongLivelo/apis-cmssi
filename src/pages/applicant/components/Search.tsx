@@ -1,7 +1,13 @@
 import { Button, Group, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
 
-function Search({ fetchData }: { fetchData: () => Promise<void> }) {
+function Search({
+  setSearch,
+  fetchApplicants,
+}: {
+  setSearch: (search: object) => void;
+  fetchApplicants: (searchCriteria: object) => Promise<void>;
+}) {
   const form = useForm({
     mode: "uncontrolled",
     initialValues: {
@@ -10,10 +16,8 @@ function Search({ fetchData }: { fetchData: () => Promise<void> }) {
   });
 
   const handleSubmit = async (values: typeof form.values) => {
-    console.log(values);
-    // Will be improved on later
-    // Add server side filtering
-    fetchData();
+    await fetchApplicants(values);
+    setSearch(values);
   };
 
   return (
