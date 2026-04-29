@@ -3,11 +3,12 @@
 import "@mantine/core/styles.css";
 
 import { MantineProvider } from "@mantine/core";
+import Applicant from "@/pages/applicant";
 
 export default function App() {
   return (
     <MantineProvider>
-      <div>test</div>
+      <Applicant />
     </MantineProvider>
   );
 }
