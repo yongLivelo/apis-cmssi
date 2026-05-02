@@ -3,14 +3,19 @@
 import "@mantine/core/styles.css";
 
 import { MantineProvider } from "@mantine/core";
-import Home from "@/pages/home";
-import Applicants from "@/pages/applicants";
 
+import Applicants from "@/pages/applicants";
+import Home from "@/pages/home";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 export default function App() {
   return (
     <MantineProvider>
-      <Home />
-      <Applicants />
+      <BrowserRouter>
+        <Routes>
+          <Route index element={<Home />} />
+          <Route path="/applicants" element={<Applicants />} />
+        </Routes>
+      </BrowserRouter>
     </MantineProvider>
   );
 }
