@@ -1,5 +1,11 @@
+import { Button, Paper } from "@mantine/core";
+
 function Controls() {
-  return <div>Controls</div>;
+  return (
+    <Paper bg="blue.1" p="xl">
+      <Button>Nice</Button>
+    </Paper>
+  );
 }
 
 export default Controls;
