@@ -1,19 +1,19 @@
 import { AppShell } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
+import { Outlet } from "react-router-dom";
 import Header from "./components/Header";
 import Navbar from "./components/Navbar";
-interface LayoutProps {
-  children: React.ReactNode;
-}
-function Layout({ children }: LayoutProps) {
+
+export default function Layout() {
   const [opened, { toggle }] = useDisclosure();
 
   return (
     <AppShell
       padding="md"
       header={{ height: 60 }}
+      layout="alt"
       navbar={{
-        width: 300,
+        width: 200,
         breakpoint: "sm",
         collapsed: { desktop: !opened, mobile: !opened },
       }}
@@ -26,9 +26,9 @@ function Layout({ children }: LayoutProps) {
         <Navbar />
       </AppShell.Navbar>
 
-      <AppShell.Main>{children}</AppShell.Main>
+      <AppShell.Main>
+        <Outlet />
+      </AppShell.Main>
     </AppShell>
   );
 }
-
-export default Layout;

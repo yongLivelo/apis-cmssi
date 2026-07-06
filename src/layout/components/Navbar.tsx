@@ -1,29 +1,46 @@
-import { NavLink } from "@mantine/core";
-import { HouseIcon, UserFocusIcon } from "@phosphor-icons/react";
-import { useNavigate } from "react-router-dom";
+import { Flex, NavLink } from "@mantine/core";
+import {
+  HouseIcon,
+  UserPlusIcon,
+  BookBookmarkIcon,
+  GearIcon,
+} from "@phosphor-icons/react";
+import { Link } from "react-router-dom";
 
 export default function Navbar() {
-  const navigate = useNavigate();
   return (
     <>
+      <Flex justify={"center"}>
+        <h2>APIS-CMSSI</h2>
+      </Flex>
+
       <NavLink
-        onClick={() => navigate("/")}
+        component={Link}
+        to="/home/"
         label="Home"
         leftSection={<HouseIcon size={16} />}
       />
 
-      <NavLink label="Applicants" href="applicants/">
-        <NavLink
-          onClick={() => navigate("applicants/add")}
-          label="Add Applicants"
-          leftSection={<UserFocusIcon size={16} />}
-        />
-        <NavLink
-          onClick={() => navigate("applicants/search")}
-          label="Search Applicants"
-          leftSection={<UserFocusIcon size={16} />}
-        />
-      </NavLink>
+      <NavLink
+        component={Link}
+        to="/applicants/"
+        label="Applicants"
+        leftSection={<UserPlusIcon size={16} />}
+      />
+
+      <NavLink
+        component={Link}
+        to="/references/"
+        label="References"
+        leftSection={<BookBookmarkIcon size={16} />}
+      />
+
+      <NavLink
+        component={Link}
+        to="/settings/"
+        label="Settings"
+        leftSection={<GearIcon size={16} />}
+      />
     </>
   );
 }

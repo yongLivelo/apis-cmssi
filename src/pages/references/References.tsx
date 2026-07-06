@@ -1,5 +1,3 @@
-function References() {
-  return <div></div>;
+export default function References() {
+  return <div>References</div>;
 }
-
-export default References;

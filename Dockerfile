@@ -1,7 +1,7 @@
 
 FROM node:22-alpine
 
-WORKDIR /PORTFOLIO
+WORKDIR /app
 
 COPY package.json .
 
